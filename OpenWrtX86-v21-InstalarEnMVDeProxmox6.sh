@@ -34,7 +34,7 @@ echo ""
 
   # Cambiar resolución de la pantalla
     vNombreDisplay=$(xrandr | grep " connected" | cut -d" " -f1)
-    xrandr --output $vNombreDisplay --mode 800x600
+    xrandr --output $vNombreDisplay --mode 1024x768
 
 menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
   opciones=(
