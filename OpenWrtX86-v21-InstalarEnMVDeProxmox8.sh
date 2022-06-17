@@ -386,9 +386,8 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Instalando GParted y Midnight Commander para poder visualizar los cambios realizados..."
           echo ""
-          sudo apt-get -y install gparted
-          sudo apt-get -y install mc
-          sudo apt-get -y autoremove
+          sudo apt-get -y install gparted > /dev/null
+          sudo apt-get -y install mc > /dev/null
 
         ;;
 
@@ -407,11 +406,13 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
 done
 
 echo ""
-echo "Ejecución del script, finalizada."
+echo " ----------"
+echo "  Ejecución del script, finalizada."
 echo ""
-echo "Reinicia el sistema con:"
-echo "sudo shutdown -r now"
+echo "  Reinicia el sistema con:"
+echo "  sudo shutdown -r now"
 echo ""
-echo "Recuerda quitar el DVD de la unidad antes de que vuelva a arrancar la máquina virtual."
+echo "  Recuerda quitar el DVD de la unidad antes de que vuelva a arrancar la máquina virtual."
+echo " ----------"
 echo ""
 
