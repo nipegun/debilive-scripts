@@ -32,6 +32,10 @@ echo ""
     echo ""
   fi
 
+  # Cambiar resolución de la pantalla
+    vNombreDisplay=$(xrandr | grep " connected" | cut -d" " -f1)
+    xrandr --output $vNombreDisplay --mode 800x600
+
 menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
   opciones=(
      1 "Hacer copia de seguridad de la instalación anterior" on
