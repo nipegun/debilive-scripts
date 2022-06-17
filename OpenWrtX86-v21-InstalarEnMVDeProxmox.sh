@@ -272,7 +272,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo "  option ipaddr '"'127.0.0.1'"'"  >> /OpenWrt/PartOVMF/scripts/network'
           sudo su -c 'echo "  option netmask '"'255.0.0.0'"'" >> /OpenWrt/PartOVMF/scripts/network'
           sudo su -c 'echo ""                                 >> /OpenWrt/PartOVMF/scripts/network'
-          sudo su -c 'echo "config interface '"'WAN'"'"       >> /OpenWrt/PartOVMF/scripts/network'
+          sudo su -c 'echo "config interface '"'i_wan'"'"     >> /OpenWrt/PartOVMF/scripts/network'
           sudo su -c 'echo "  option ifname '"'eth0'"'"       >> /OpenWrt/PartOVMF/scripts/network'
           sudo su -c 'echo "  option proto '"'dhcp'"'"        >> /OpenWrt/PartOVMF/scripts/network'
           sudo rm -rf                               /OpenWrt/PartExt4/etc/config/network
