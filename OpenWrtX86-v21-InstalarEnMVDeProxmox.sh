@@ -26,7 +26,6 @@ echo ""
     echo ""
     echo "  dialog no está instalado. Iniciando su instalación..."
     echo ""
-    sudo sed -i -e 's|main restricted|main universe restricted|g' /etc/apt/sources.list
     sudo apt-get -y update
     sudo apt-get -y install dialog
     echo ""
