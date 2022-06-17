@@ -32,7 +32,7 @@ echo ""
     echo ""
   fi
 
-menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 26 94 16)
+menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 80 20)
   opciones=(
      1 "Hacer copia de seguridad de la instalación anterior" on
      2 "Crear las particiones" on
