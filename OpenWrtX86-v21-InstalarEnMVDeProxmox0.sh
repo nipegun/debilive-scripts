@@ -63,6 +63,10 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 22 94 16)
           echo ""
           echo "  Haciendo copia de seguridad de la instalación anterior..."
           echo ""
+          # Desmontar discos, si es que están montados
+            sudo umount $PrimerDisco"1" 2> /dev/null
+            sudo umount $PrimerDisco"2" 2> /dev/null
+            sudo umount $PrimerDisco"3" 2> /dev/null
           # Crear particiones para montar
             sudo mkdir -p /OpenWrt/PartOVMF/
             sudo mount -t auto $PrimerDisco"1" /OpenWrt/PartOVMF/
@@ -380,6 +384,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 22 94 16)
           echo ""
           sudo apt-get -y install gparted
           sudo apt-get -y install mc
+
         ;;
 
         16)
