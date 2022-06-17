@@ -32,7 +32,7 @@ echo ""
     echo ""
   fi
 
-menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 28 94 16)
+menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 26 94 16)
   opciones=(
      1 "Hacer copia de seguridad de la instalación anterior" on
      2 "Crear las particiones" on
@@ -374,7 +374,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 28 94 16)
           # Mover archivos
             sudo mv /CopSegOpenWrt/$vFechaDeEjec/ /OpenWrt/PartExt4/CopSeg/
           # Borrar carpeta de copia de seguridad de la partición de Debian Live
-            sudo rm -f  /CopSegOpenWrt
+            sudo rm -rf  /CopSegOpenWrt/
         ;;
 
         15)
