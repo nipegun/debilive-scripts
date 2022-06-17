@@ -388,6 +388,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           sudo apt-get -y install gparted
           sudo apt-get -y install mc
+          sudo apt-get -y autoremove
 
         ;;
 
