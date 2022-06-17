@@ -80,9 +80,9 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 22 94 16)
             sudo cp -r /OpenWrt/PartExt4/* /CopSegOpenWrt/$vFechaDeEjec/PartExt4/
           # Desmontar partición 
             sudo umount /OpenWrt/PartOVMF/
-            sudo rm -f  /OpenWrt/PartOVMF/
+            sudo rm -rf  /OpenWrt/PartOVMF/
             sudo umount /OpenWrt/PartExt4/
-            sudo rm -f  /OpenWrt/PartOVMF/
+            sudo rm -rf  /OpenWrt/PartOVMF/
         ;;
 
         2)
