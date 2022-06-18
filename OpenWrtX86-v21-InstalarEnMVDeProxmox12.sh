@@ -405,7 +405,9 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo -e "${ColorAzulClaro}    Copiando el script de activación de Wifi...${FinColor}"
           echo ""
-          sudo su -c 'echo "uci set wireless.radio0.country='ES'"                                                          > /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "#!/bin/bash"                                                                                   > /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo ""                                                                                             >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.radio0.country='ES'"                                                         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
           sudo su -c 'echo "uci set wireless.radio0.channel='auto'"                                                       >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
           sudo su -c 'echo "uci set wireless.radio0.disabled='0'"                                                         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
           sudo su -c 'echo "uci set wireless.radio1.country='ES'"                                                         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
