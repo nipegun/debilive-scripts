@@ -12,20 +12,23 @@
 # curl -s https://raw.githubusercontent.com/nipegun/debilive-scripts/main/OpenWrtX86-v21-InstalarEnMVDeProxmox.sh | bash
 # ----------
 
-ColorVerde="\033[1;32m"
-FinColor="\033[0m"
+ColorAzul="\033[0;34m"
+ColorAzulClaro="\033[1;34m"
+ColorVerde='\033[1;32m'
+ColorRojo='\033[1;31m'
+FinColor='\033[0m'
 
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
 vPrimerDisco="/dev/sda"
 
 echo ""
-echo -e "${ColorVerde}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${FinColor}"
+echo -e "${ColorAzul}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${FinColor}"
 echo ""
 
 # Comprobar si el paquete dialog está instalado. Si no lo está, instalarlo.
   if [[ $(dpkg-query -s dialog 2>/dev/null | grep installed) == "" ]]; then
     echo ""
-    echo "  dialog no está instalado. Iniciando su instalación..."
+    echo -e "${ColorRojo}  dialog no está instalado. Iniciando su instalación...${FinColor}"
     echo ""
     sudo apt-get -y update 2> /dev/null
     sudo apt-get -y install dialog
@@ -65,7 +68,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         1)
 
           echo ""
-          echo "  Haciendo copia de seguridad de la instalación anterior..."
+          echo -e "${ColorAzulClaro}    Haciendo copia de seguridad de la instalación anterior...${FinColor}"
           echo ""
           # Desmontar discos, si es que están montados
             sudo umount $vPrimerDisco"1" 2> /dev/null
@@ -92,7 +95,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         2)
 
           echo ""
-          echo "  Creando las particiones..."
+          echo -e "${ColorAzulClaro}    Creando las particiones...${FinColor}"
           echo ""
           sudo rm -rf /OpenWrt/PartOVMF/*
           sudo rm -rf /OpenWrt/PartExt4/*
@@ -103,7 +106,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           # Comprobar si el paquete parted está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s parted 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  parted no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      parted no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install parted
@@ -123,12 +126,12 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         3)
 
           echo ""
-          echo "  Formateando las particiones..."
+          echo -e "${ColorAzulClaro}    Formateando las particiones...${FinColor}"
           echo ""
           # Comprobar si el paquete dosfstools está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s dosfstools 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  dosfstools no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      dosfstools no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install dosfstool
@@ -146,12 +149,12 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         4)
 
           echo ""
-          echo "  Marcando la partición EFI como esp..."
+          echo -e "${ColorAzulClaro}    Marcando la partición EFI como esp...${FinColor}"
           echo ""
           # Comprobar si el paquete parted está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s parted 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  parted no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      parted no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install parted
@@ -164,13 +167,13 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         5)
 
           echo ""
-          echo "  Determinando la última versión de OpenWrt"
+          echo -e "${ColorAzulClaro}    Determinando la última versión de OpenWrt...${FinColor}"
           echo ""
 
           # Comprobar si el paquete curl está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s curl 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  curl no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      curl no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install curl
@@ -180,7 +183,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep 21 | head -n 1 | cut -d'/' -f 5)
 
           echo ""
-          echo "  La última versión estable de OpenWrt 21 es la $VersOpenWrt"
+          echo -e "${ColorAzulClaro}      La última versión estable de OpenWrt 21 es la $VersOpenWrt.${FinColor}"
           echo ""
 
         ;;
@@ -188,7 +191,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         6)
 
           echo ""
-          echo "  Montando las particiones..."
+          echo -e "${ColorAzulClaro}    Montando las particiones...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/ 2> /dev/null
           sudo mount -t auto /dev/sda1 /OpenWrt/PartOVMF/
@@ -200,14 +203,14 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         7)
 
           echo ""
-          echo "  Descargando grub para efi..."
+          echo -e "${ColorAzulClaro}    Descargando grub para efi...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/EFI/Boot/ 2> /dev/null
           rm -rf /OpenWrt/PartOVMF/EFI/Boot/*
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      wget no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install wget
@@ -220,7 +223,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         8)
 
           echo ""
-          echo "  Creando el archivo de configuración para Grub (grub.cfg)..."
+          echo -e "${ColorAzulClaro}    Creando el archivo de configuración para Grub (grub.cfg)...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/EFI/OpenWrt/ 2> /dev/null
           sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                                                            > /OpenWrt/PartOVMF/EFI/OpenWrt/grub.cfg"
@@ -242,21 +245,22 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         9)
 
           echo ""
-          echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt"
+          echo -e "${ColorAzulClaro}    Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt...${FinColor}"          
           echo ""
+
           echo ""
-          echo "  Borrando el contenido de la partición ext4..."
+          echo -e "${ColorAzulClaro}    Borrando el contenido de la partición ext4...${FinColor}"
           echo ""
           sudo rm -rf /OpenWrt/PartExt4/*
 
           echo ""
-          echo "  Bajando y posicionando el Kernel..."
+          echo -e "${ColorAzulClaro}    Bajando y posicionando el Kernel...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartExt4/boot 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      wget no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install wget
@@ -265,19 +269,19 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/boot/generic-kernel.bin
 
           echo ""
-          echo "  Bajando el archivo con el sistema root..."
+          echo -e "${ColorAzulClaro}    Bajando el archivo con el sistema root...${FinColor}"
           echo ""
           sudo rm -rf /OpenWrt/PartOVMF/rootfs.tar.gz
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-rootfs.tar.gz -O /OpenWrt/PartOVMF/rootfs.tar.gz
 
           echo ""
-          echo "  Descomprimiendo el sistema de archivos root en la partición ext4..."
+          echo -e "${ColorAzulClaro}    Descomprimiendo el sistema de archivos root en la partición ext4...${FinColor}"
           echo ""
 
           # Comprobar si el paquete tar está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s tar 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  tar no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      tar no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install tar
@@ -290,7 +294,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         10)
 
           echo ""
-          echo "  Configurando la MV de OpenWrt para que pille IP por DHCP"
+          echo -e "${ColorAzulClaro}    Configurando la MV de OpenWrt para que pille IP por DHCP...${FinColor}"
           echo ""
           sudo mkdir /OpenWrt/PartOVMF/scripts/ 2> /dev/null
           sudo su -c 'echo "config interface loopback"         > /OpenWrt/PartOVMF/scripts/network'
@@ -310,7 +314,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         11)
 
           echo ""
-          echo "  Copiando el script de instalación de paquetes..."
+          echo -e "${ColorAzulClaro}    Copiando el script de instalación de paquetes...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/scripts/ 2> /dev/null
           sudo su -c "echo '#!/bin/sh'                                        > /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh"
@@ -365,7 +369,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         12)
 
           echo ""
-          echo "  Copiando el script de instalación de los o-scripts..."
+          echo -e "${ColorAzulClaro}    Copiando el script de instalación de los o-scripts...${FinColor}"
           echo ""
           sudo mkdir -p                                                                                                        /OpenWrt/PartOVMF/scripts/ 2> /dev/null
           sudo su -c "echo '#!/bin/sh'                                                                                       > /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh"
@@ -380,15 +384,15 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         13)
 
           echo ""
-          echo "  Copiando el script de preparación de OpenWrt para funcionar como una MV de Proxmox..."
+          echo -e "${ColorAzulClaro}    Copiando el script de preparación de OpenWrt para funcionar como una MV de Proxmox...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/scripts/ 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo -e "${ColorRojo}      wget no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
-              sudo apt-get -y update 2> /dev/null
+              sudo apt-get -y update > /dev/null
               sudo apt-get -y install wget
               echo ""
             fi
@@ -401,7 +405,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         14)
 
           echo ""
-          echo "  Moviendo copia de seguridad de la instalación anterior a la instalación nueva..."
+          echo -e "${ColorAzulClaro}    Moviendo copia de seguridad de la instalación anterior a la instalación nueva...${FinColor}"
           echo ""
           # Crear carpeta en la nueva partición
           sudo mkdir -p /OpenWrt/PartExt4/CopSeg/
@@ -414,7 +418,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         15)
 
           echo ""
-          echo "  Instalando Midnight Commander para poder visualizar los cambios realizados..."
+          echo -e "${ColorAzulClaro}    Instalando Midnight Commander para poder visualizar los cambios realizados...${FinColor}"
           echo ""
           sudo apt-get -y install mc > /dev/null
 
@@ -423,7 +427,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         16)
 
           echo ""
-          echo "  Apagando la máquina virtual..."
+          echo -e "${ColorAzulClaro}    Apagando la máquina virtual...${FinColor}"
           echo ""
           #eject
           sudo shutdown -h now
