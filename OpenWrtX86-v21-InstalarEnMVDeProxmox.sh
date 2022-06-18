@@ -254,7 +254,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo rm -rf /OpenWrt/PartExt4/*
 
           echo ""
-          echo -e "${ColorAzulClaro}    Bajando y posicionando el Kernel...${FinColor}"
+          echo -e "${ColorAzulClaro}    Descargando y posicionando el Kernel...${FinColor}"
           echo ""
           sudo mkdir -p /OpenWrt/PartExt4/boot 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
@@ -269,7 +269,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/boot/generic-kernel.bin
 
           echo ""
-          echo -e "${ColorAzulClaro}    Bajando el archivo con el sistema root...${FinColor}"
+          echo -e "${ColorAzulClaro}    Descargando el archivo con el sistema root...${FinColor}"
           echo ""
           sudo rm -rf /OpenWrt/PartOVMF/rootfs.tar.gz
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-rootfs.tar.gz -O /OpenWrt/PartOVMF/rootfs.tar.gz
