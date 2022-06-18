@@ -100,6 +100,15 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo umount $vPrimerDisco"2" 2> /dev/null
           sudo umount $vPrimerDisco"3" 2> /dev/null
           sudo swapoff -a
+          # Comprobar si el paquete parted está instalado. Si no lo está, instalarlo.
+            if [[ $(dpkg-query -s parted 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "  parted no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update
+              sudo apt-get -y install parted
+              echo ""
+            fi
           # Crear tabla de particiones GPT
             sudo parted -s $vPrimerDisco mklabel gpt
           # Crear la partición OVMF
@@ -130,6 +139,15 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Marcando la partición EFI como esp..."
           echo ""
+          # Comprobar si el paquete parted está instalado. Si no lo está, instalarlo.
+            if [[ $(dpkg-query -s parted 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "  parted no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update
+              sudo apt-get -y install parted
+              echo ""
+            fi
           sudo parted -s $vPrimerDisco set 1 esp on
 
         ;;
