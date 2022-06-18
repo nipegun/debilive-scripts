@@ -53,7 +53,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
     13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox" on
     14 "Mover copia de seguridad de la instalación anterior a la nueva instalación" on
     15 "Instalar GPartEd y Midnight Commander para poder visualizar los cambios realizados" on
-    16 "Apagar la máquina virtual" off
+    16 "Apagar la máquina virtual" on
   )
   choices=$("${menu[@]}" "${opciones[@]}" 2>&1 >/dev/tty)
   clear
