@@ -54,9 +54,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
     11 "Copiar el script de instalación de paquetes." on
     12 "Copiar el script de instalación de los o-scripts." on
     13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox." on
-    14 "Mover copia de seguridad de la instalación anterior a la nueva instalación." on
-    15 "Instalar Midnight Commander para poder visualizar los cambios realizados." on
-    16 "Apagar la máquina virtual." on
+    14 "Copiar el script de activación de WiFi." on
+    15 "Mover copia de seguridad de la instalación anterior a la nueva instalación." on
+    16 "Instalar Midnight Commander para poder visualizar los cambios realizados." on
+    17 "Apagar la máquina virtual." on
   )
   choices=$("${menu[@]}" "${opciones[@]}" 2>&1 >/dev/tty)
   clear
@@ -403,6 +404,29 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         14)
 
           echo ""
+          echo -e "${ColorAzulClaro}    Copiando el script de activación de Wifi...${FinColor}"
+          echo ""
+          sudo su -c 'echo "uci set wireless.radio0.country='ES'"          > /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.radio0.disabled='0'"         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.radio1.country='ES'"         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.radio1.disabled='0'"         >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.default_radio0.disabled='0'" >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.default_radio1.disabled='0'" >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.inv_radio0.disabled='0'"     >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.inv_radio1.disabled='0'"     >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.iot_radio0.disabled='0'"     >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci set wireless.iot_radio1.disabled='0'"     >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "uci commit wireless"                          >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo "wifi reload"                                  >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo ""                                             >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo su -c 'echo ""                                             >> /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh'
+          sudo chmod +x /OpenWrt/PartExt4/root/scripts/4-ActivarWiFi.sh
+
+        ;;
+
+        15)
+
+          echo ""
           echo -e "${ColorAzulClaro}    Moviendo copia de seguridad de la instalación anterior a la instalación nueva...${FinColor}"
           echo ""
           # Crear carpeta en la nueva partición
@@ -411,9 +435,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo mv /CopSegOpenWrt/$vFechaDeEjec/ /OpenWrt/PartExt4/CopSeg/
           # Borrar carpeta de copia de seguridad de la partición de Debian Live
             sudo rm -rf  /CopSegOpenWrt/
-        ;;
 
-        15)
+        ;;
+   
+        16)
 
           echo ""
           echo -e "${ColorAzulClaro}    Instalando Midnight Commander para poder visualizar los cambios realizados...${FinColor}"
@@ -422,7 +447,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
         ;;
 
-        16)
+
+        17)
 
           echo ""
           echo -e "${ColorAzulClaro}    Apagando la máquina virtual...${FinColor}"
