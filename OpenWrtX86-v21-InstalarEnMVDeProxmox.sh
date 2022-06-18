@@ -125,6 +125,15 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Formateando las particiones..."
           echo ""
+          # Comprobar si el paquete dosfstools está instalado. Si no lo está, instalarlo.
+            if [[ $(dpkg-query -s dosfstools 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "  dosfstools no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update 2> /dev/null
+              sudo apt-get -y install dosfstool
+              echo ""
+            fi
           # Formatear la partición para EFI como fat32
             sudo mkfs -t vfat -F 32 -n OVMF $vPrimerDisco"1"
           # Formatear la partición para OpenWrt como ext4
