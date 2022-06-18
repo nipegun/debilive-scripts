@@ -374,7 +374,6 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c "echo '#!/bin/sh'                                                                                       > /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh"
           sudo su -c 'echo ""                                                                                               >> /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh'
           sudo su -c 'echo "wget -O - https://raw.githubusercontent.com/nipegun/o-scripts/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                     >> /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh'
           sudo cp /OpenWrt/PartOVMF/scripts/2-InstalarOScripts.sh /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
           sudo chmod +x                                           /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
 
