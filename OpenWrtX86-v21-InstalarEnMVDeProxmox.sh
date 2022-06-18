@@ -130,7 +130,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Marcando la partición EFI como esp..."
           echo ""
-          sudo parted -s $PrimerDisco set 1 esp on
+          sudo parted -s $vPrimerDisco set 1 esp on
 
         ;;
 
