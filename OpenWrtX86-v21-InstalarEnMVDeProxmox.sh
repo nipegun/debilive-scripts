@@ -28,7 +28,7 @@ echo ""
 # Comprobar si el paquete dialog está instalado. Si no lo está, instalarlo.
   if [[ $(dpkg-query -s dialog 2>/dev/null | grep installed) == "" ]]; then
     echo ""
-    echo -e "${ColorRojo}  dialog no está instalado. Iniciando su instalación...${FinColor}"
+    echo -e "${ColorRojo}    dialog no está instalado. Iniciando su instalación...${FinColor}"
     echo ""
     sudo apt-get -y update 2> /dev/null
     sudo apt-get -y install dialog
@@ -56,7 +56,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
     13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox" on
     14 "Mover copia de seguridad de la instalación anterior a la nueva instalación" on
     15 "Instalar GPartEd y Midnight Commander para poder visualizar los cambios realizados" on
-    16 "Apagar la máquina virtual" on
+    16 "Apagar la máquina virtual" off
   )
   choices=$("${menu[@]}" "${opciones[@]}" 2>&1 >/dev/tty)
   clear
