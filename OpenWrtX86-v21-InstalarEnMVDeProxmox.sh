@@ -27,7 +27,7 @@ echo ""
     echo ""
     echo "  dialog no está instalado. Iniciando su instalación..."
     echo ""
-    sudo apt-get -y update
+    sudo apt-get -y update 2> /dev/null
     sudo apt-get -y install dialog
     echo ""
   fi
@@ -105,7 +105,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  parted no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install parted
               echo ""
             fi
@@ -144,7 +144,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  parted no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install parted
               echo ""
             fi
@@ -163,7 +163,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  curl no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install curl
               echo ""
             fi
@@ -200,7 +200,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install wget
               echo ""
             fi
@@ -249,7 +249,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install wget
               echo ""
             fi
@@ -270,7 +270,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  tar no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install tar
               echo ""
             fi
@@ -376,7 +376,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
+              sudo apt-get -y update 2> /dev/null
               sudo apt-get -y install wget
               echo ""
             fi
