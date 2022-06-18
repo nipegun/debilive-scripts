@@ -384,9 +384,8 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
         15)
 
           echo ""
-          echo "  Instalando GParted y Midnight Commander para poder visualizar los cambios realizados..."
+          echo "  Instalando Midnight Commander para poder visualizar los cambios realizados..."
           echo ""
-          sudo apt-get -y install gparted > /dev/null
           sudo apt-get -y install mc > /dev/null
 
         ;;
