@@ -134,7 +134,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo -e "${ColorRojo}      dosfstools no está instalado. Iniciando su instalación...${FinColor}"
               echo ""
               sudo apt-get -y update 2> /dev/null
-              sudo apt-get -y install dosfstool
+              sudo apt-get -y install dosfstools
               echo ""
             fi
           # Formatear la partición para EFI como fat32
