@@ -16,7 +16,7 @@ ColorVerde="\033[1;32m"
 FinColor="\033[0m"
 
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
-PrimerDisco="/dev/sda"
+PrimerDisco="/dev/sda/"
 
 echo ""
 echo -e "${ColorVerde}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${FinColor}"
