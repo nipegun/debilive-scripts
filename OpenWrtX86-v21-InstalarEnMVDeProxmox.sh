@@ -426,7 +426,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo ""                                                                                           >> /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh'
           sudo su -c 'echo "curl -s https://raw.githubusercontent.com/nipegun/o-scripts/master/WiFi-Configurar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh'
           sudo su -c 'echo ""                                                                                           >> /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh'
-          sudo su -c 'echo "/sbin/wifi restart"                                                                         >> /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh'
+          sudo su -c 'echo "/sbin/wifi reload"                                                                          >> /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh'
           sudo chmod +x                                                                                                    /OpenWrt/PartExt4/root/scripts/4-ConfigurarWiFi.sh
 
         ;;
