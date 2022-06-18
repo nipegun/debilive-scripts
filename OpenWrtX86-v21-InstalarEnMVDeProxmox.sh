@@ -41,22 +41,22 @@ echo ""
 
 menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
   opciones=(
-     1 "Hacer copia de seguridad de la instalación anterior" on
-     2 "Crear las particiones" on
-     3 "Formatear las particiones" on
-     4 "Marcar la partición OVMF como esp" on
-     5 "Determinar la última versión de OpenWrt" on
-     6 "Montar las particiones" on
-     7 "Descargar Grub para EFI" on
-     8 "Crear el archivo de configuración para Grub" on
-     9 "Crear la estructura de carpetas y archivos en ext4" on
-    10 "Configurar la MV para que pille IP por DHCP" on
-    11 "Copiar el script de instalación de paquetes" on
-    12 "Copiar el script de instalación de los o-scripts" on
-    13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox" on
-    14 "Mover copia de seguridad de la instalación anterior a la nueva instalación" on
-    15 "Instalar Midnight Commander para poder visualizar los cambios realizados" on
-    16 "Apagar la máquina virtual" off
+     1 "Hacer copia de seguridad de la instalación anterior." on
+     2 "Crear las particiones." on
+     3 "Formatear las particiones." on
+     4 "Marcar la partición OVMF como esp." on
+     5 "Determinar la última versión de OpenWrt." on
+     6 "Montar las particiones." on
+     7 "Descargar Grub para EFI." on
+     8 "Crear el archivo de configuración para Grub." on
+     9 "Crear la estructura de carpetas y archivos en ext4." on
+    10 "Configurar la MV para que pille IP por DHCP." on
+    11 "Copiar el script de instalación de paquetes." on
+    12 "Copiar el script de instalación de los o-scripts." on
+    13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox." on
+    14 "Mover copia de seguridad de la instalación anterior a la nueva instalación." on
+    15 "Instalar Midnight Commander para poder visualizar los cambios realizados." on
+    16 "Apagar la máquina virtual." off
   )
   choices=$("${menu[@]}" "${opciones[@]}" 2>&1 >/dev/tty)
   clear
