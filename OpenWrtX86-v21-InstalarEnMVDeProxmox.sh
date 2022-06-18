@@ -39,7 +39,7 @@ echo ""
     vNombreDisplay=$(xrandr | grep " connected" | cut -d" " -f1)
     xrandr --output $vNombreDisplay --mode 1024x768
 
-menu=(dialog --timeout 5 --checklist "Instalación de OpenWrt X86:" 30 100 20)
+menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
   opciones=(
      1 "Hacer copia de seguridad de la instalación anterior" on
      2 "Crear las particiones" on
@@ -441,10 +441,6 @@ done
 echo ""
 echo " ----------"
 echo "  Ejecución del script, finalizada."
-echo ""
-echo "  Reinicia el sistema con:"
-echo "  sudo shutdown -r now"
-echo ""
 echo "  Recuerda quitar el DVD de la unidad antes de que vuelva a arrancar la máquina virtual."
 echo " ----------"
 echo ""
