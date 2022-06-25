@@ -356,7 +356,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo "  opkg install luci-i18n-wireguard-es"           >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
           sudo su -c 'echo "  opkg install luci-i18n-wol-es"                 >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
           sudo su -c 'echo ""                                                >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
-          sudo su -c 'echo "  Reiniciando OpenWrt..."                        >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
+          sudo su -c 'echo "  echo Reiniciando OpenWrt..."                   >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
           sudo su -c 'echo ""                                                >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
           sudo su -c 'echo "reboot"                                          >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh'
           sudo mkdir -p                                           /OpenWrt/PartExt4/root/scripts/
