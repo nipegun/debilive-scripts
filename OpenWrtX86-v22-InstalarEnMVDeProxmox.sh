@@ -181,10 +181,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
   
-          VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep 21 | head -n 1 | cut -d'/' -f 5)
+          VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep 22 | head -n 1 | cut -d'/' -f 5)
 
           echo ""
-          echo -e "${ColorAzulClaro}      La última versión estable de OpenWrt 21 es la $VersOpenWrt.${FinColor}"
+          echo -e "${ColorAzulClaro}      La última versión estable de OpenWrt 22 es la $VersOpenWrt.${FinColor}"
           echo ""
 
         ;;
@@ -395,7 +395,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarOpenWrt21ComoMVdeProxmox.sh -O /OpenWrt/PartOVMF/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarOpenWrt22ComoMVdeProxmox.sh -O /OpenWrt/PartOVMF/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
           sudo cp /OpenWrt/PartOVMF/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
           sudo chmod +x /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
 
