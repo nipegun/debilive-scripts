@@ -365,7 +365,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Instalando Midnight Commander para poder visualizar los cambios realizados..."
           echo ""
-          sudo apt-get -y install mc > /dev/null
+          sudo apt-get -y install mc
+          sudo apt-get -y install gparted
 
         ;;
 
