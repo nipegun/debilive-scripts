@@ -9,7 +9,7 @@
 #  Script de NiPeGun para montar las particiones de OpenWrt en Debian Live 
 #
 # Ejecución remota:
-# curl -s https://raw.githubusercontent.com/nipegun/ubulive-scripts/main/OpenWrtX86-Particiones-Montar.sh | bash
+# curl -s https://raw.githubusercontent.com/nipegun/debilive-scripts/main/OpenWrtX86-Particiones-Montar.sh | bash
 # ----------
 
 # Crear las carpetas para montar las particiones
