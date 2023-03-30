@@ -150,7 +150,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           # Comprobar si el paquete curl está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s curl 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  curl no está instalado. Iniciando su instalación..."
+              echo "    El paquete curl no está instalado. Iniciando su instalación..."
               echo ""
               sudo apt-get -y update
               sudo apt-get -y install curl
@@ -160,7 +160,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep $vNumUltVer | head -n 1 | cut -d'/' -f 5)
 
           echo ""
-          echo "  La última versión estable de OpenWrt 22 es la $VersOpenWrt"
+          echo "    La última versión estable de OpenWrt 22 es la $VersOpenWrt"
           echo ""
 
         ;;
