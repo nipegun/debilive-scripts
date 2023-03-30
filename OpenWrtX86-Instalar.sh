@@ -160,7 +160,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep $vNumUltVer | head -n 1 | cut -d'/' -f 5)
 
           echo ""
-          echo "    La última versión estable de OpenWrt 22 es la $VersOpenWrt"
+          echo "    La última versión estable de OpenWrt 22 es la $VersOpenWrt."
           echo ""
 
         ;;
@@ -222,21 +222,21 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         9)
 
           echo ""
-          echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt"
+          echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt..."
           echo ""
           echo ""
-          echo "  Borrando el contenido de la partición ext4..."
+          echo "    Borrando el contenido de la partición ext4..."
           echo ""
           sudo rm -rf /OpenWrt/PartExt4/*
 
           echo ""
-          echo "  Bajando y posicionando el Kernel..."
+          echo "    Bajando y posicionando el Kernel..."
           echo ""
           sudo mkdir -p /OpenWrt/PartExt4/boot 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo "      El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
               sudo apt-get -y update
               sudo apt-get -y install wget
@@ -245,19 +245,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/boot/generic-kernel.bin
 
           echo ""
-          echo "  Bajando el archivo con el sistema root..."
+          echo "    Bajando el archivo con el sistema root..."
           echo ""
           sudo rm -rf /OpenWrt/PartOVMF/rootfs.tar.gz
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-rootfs.tar.gz -O /OpenWrt/PartOVMF/rootfs.tar.gz
 
           echo ""
-          echo "  Descomprimiendo el sistema de archivos root en la partición ext4..."
+          echo "    Descomprimiendo el sistema de archivos root en la partición ext4..."
           echo ""
 
           # Comprobar si el paquete tar está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s tar 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  tar no está instalado. Iniciando su instalación..."
+              echo "      El paquete tar no está instalado. Iniciando su instalación..."
               echo ""
               sudo apt-get -y update
               sudo apt-get -y install tar
@@ -270,7 +270,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         10)
 
           echo ""
-          echo "  Configurando la MV de OpenWrt para que pille IP por DHCP"
+          echo "  Configurando la MV de OpenWrt para que pille IP por DHCP..."
           echo ""
           sudo mkdir /OpenWrt/PartOVMF/scripts/ 2> /dev/null
           sudo su -c 'echo "config interface loopback"         > /OpenWrt/PartOVMF/scripts/network'
