@@ -1,6 +1,6 @@
 # debilive-scripts
 
-Los "ubulive-scripts" son scripts pensados para ejecutarse desde la terminal de un LiveCD de Debian.
+Los "debilive-scripts" son scripts pensados para ejecutarse desde la terminal de un LiveCD de Debian.
 
 ## ¿Cómo se ejecutan?
 
