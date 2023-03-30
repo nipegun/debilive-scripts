@@ -35,6 +35,7 @@ echo ""
     echo ""
     echo -e "${vColorRojo}    El paquete dialog no está instalado. Iniciando su instalación...${vFinColor}"
     echo ""
+    sudo sed -i -e 's|main restricted|main universe restricted|g' /etc/apt/sources.list
     sudo apt-get -y update
     sudo apt-get -y install dialog
     echo ""
