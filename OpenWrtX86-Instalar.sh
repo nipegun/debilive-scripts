@@ -144,7 +144,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         5)
 
           echo ""
-          echo "  Determinando la última versión de OpenWrt"
+          echo "  Determinando la última versión de OpenWrt..."
           echo ""
 
           # Comprobar si el paquete curl está instalado. Si no lo está, instalarlo.
