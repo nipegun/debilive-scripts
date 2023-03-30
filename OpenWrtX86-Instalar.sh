@@ -16,22 +16,25 @@
 vNumUltVer=$(curl -sL openwrt.org | grep urrent | grep "stable" | grep ":" | cut -d":" -f2 | cut -d"." -f1 | sed 's- --g' | cut -d"t" -f2)
 #vNumUltVer="22"
 
-ColorVerde="\033[1;32m"
-FinColor="\033[0m"
-
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
 vPrimerDisco="/dev/sda"
 
+
+vColorAzul="\033[0;34m"
+vColorAzulClaro="\033[1;34m"
+vColorVerde='\033[1;32m'
+vColorRojo='\033[1;31m'
+vFinColor='\033[0m'
+
 echo ""
-echo -e "${ColorVerde}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${FinColor}"
+echo -e "${vColorAzulClaro}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${vFinColor}"
 echo ""
 
 # Comprobar si el paquete dialog está instalado. Si no lo está, instalarlo.
   if [[ $(dpkg-query -s dialog 2>/dev/null | grep installed) == "" ]]; then
     echo ""
-    echo "  dialog no está instalado. Iniciando su instalación..."
+    echo -e "${vColorRojo}    El paquete dialog no está instalado. Iniciando su instalación...${vFinColor}"
     echo ""
-    sudo sed -i -e 's|main restricted|main universe restricted|g' /etc/apt/sources.list
     sudo apt-get -y update
     sudo apt-get -y install dialog
     echo ""
