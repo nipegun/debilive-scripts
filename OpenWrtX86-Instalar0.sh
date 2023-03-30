@@ -293,6 +293,15 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Copiando el script de instalación de paquetes..."
           echo ""
           sudo mkdir -p /OpenWrt/PartOVMF/scripts/ 2> /dev/null
+          # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
+            if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "  wget no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update
+              sudo apt-get -y install wget
+              echo ""
+            fi
           wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh
           echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                        >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh
           echo "reboot"                                                                                            >> /OpenWrt/PartOVMF/scripts/1-InstalarPaquetes.sh
