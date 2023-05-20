@@ -9,8 +9,8 @@
 #  Script de NiPeGun para instalar OpenWrt en una máquina virtual de ProxmoxVE inciando desde Debian Live 
 #
 # Ejecución remota:
-#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/OpenWrtX86-Instalar.sh | bash
-#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/OpenWrtX86-Instalar.sh | sed 's-/dev/sda-/dev/vda-g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-/dev/sda-/dev/vda-g' | bash
 # ----------
 
 vNumUltVer=$(curl -sL openwrt.org | grep urrent | grep "stable" | grep ":" | cut -d":" -f2 | cut -d"." -f1 | sed 's- --g' | cut -d"t" -f2)
@@ -19,12 +19,12 @@ vNumUltVer=$(curl -sL openwrt.org | grep urrent | grep "stable" | grep ":" | cut
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
 vPrimerDisco="/dev/sda"
 
-
-vColorAzul="\033[0;34m"
-vColorAzulClaro="\033[1;34m"
-vColorVerde='\033[1;32m'
-vColorRojo='\033[1;31m'
-vFinColor='\033[0m'
+# Declaración de las variables de color
+  vColorAzul="\033[0;34m"
+  vColorAzulClaro="\033[1;34m"
+  vColorVerde='\033[1;32m'
+  vColorRojo='\033[1;31m'
+  vFinColor='\033[0m'
 
 echo ""
 echo -e "${vColorAzulClaro}  Iniciando el script de instalación de OpenWrt X86 para máquinas virtuales de Proxmox...${vFinColor}"
