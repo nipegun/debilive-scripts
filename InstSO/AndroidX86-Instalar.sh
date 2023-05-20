@@ -194,7 +194,7 @@ menu=(dialog --timeout 5 --checklist "Instalación de AndroidX86:" 22 94 16)
           sudo mkdir -p /AndroidX86/PartOVMF/EFI/Boot/ 2> /dev/null
           rm -rf /AndroidX86/PartOVMF/EFI/Boot/*
           # sudo wget http://hacks4geeks.com/_/premium/descargas/OpenWrtX86/PartEFI/EFI/Boot/bootx64.efi -O /AndroidX86/PartOVMF/EFI/Boot/bootx64.efi
-          sudo wget https://raw.githubusercontent.com/nipegun/debilive-scripts/main/Recursos/bootx64androidx86.efi -O /AndroidX86/PartOVMF/EFI/Boot/bootx64.efi
+          sudo wget https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/Recursos/bootx64androidx86.efi -O /AndroidX86/PartOVMF/EFI/Boot/bootx64.efi
           sudo mkdir -p /AndroidX86/PartOVMF/EFI/AndroidX86/ 2> /dev/null
           sudo cp /AndroidX86/PartExt4/Temp/ISO/efi/boot/android.cfg /AndroidX86/PartOVMF/EFI/AndroidX86/grub.cfg
           sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                    > /AndroidX86/PartOVMF/EFI/AndroidX86/grub.cfg"
