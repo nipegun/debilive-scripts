@@ -80,21 +80,22 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo umount $vPrimerDisco"2" 2> /dev/null
             sudo umount $vPrimerDisco"3" 2> /dev/null
           # Crear particiones para montar
-            sudo mkdir -p /OpenWrt/PartOVMF/
-            sudo mount -t auto $vPrimerDisco"1" /OpenWrt/PartOVMF/
+            sudo mkdir -p /OpenWrt/PartEFI/
+            sudo mount -t auto $vPrimerDisco"1" /OpenWrt/PartEFI/
             sudo mkdir -p /OpenWrt/PartExt4/
             sudo mount -t auto $vPrimerDisco"2" /OpenWrt/PartExt4/
           # Crear carpeta donde guardar los archivos
-            sudo mkdir -p /CopSegOpenWrt/$vFechaDeEjec/PartOVMF/
+            sudo mkdir -p /CopSegOpenWrt/$vFechaDeEjec/PartEFI/
             sudo mkdir -p /CopSegOpenWrt/$vFechaDeEjec/PartExt4/
           # Copiar archivos
-            sudo cp -r /OpenWrt/PartOVMF/* /CopSegOpenWrt/$vFechaDeEjec/PartOVMF/
+            sudo cp -r /OpenWrt/PartEFI/*  /CopSegOpenWrt/$vFechaDeEjec/PartEFI/
             sudo cp -r /OpenWrt/PartExt4/* /CopSegOpenWrt/$vFechaDeEjec/PartExt4/
           # Desmontar partición 
-            sudo umount /OpenWrt/PartOVMF/
-            sudo rm -rf  /OpenWrt/PartOVMF/
+            sudo umount /OpenWrt/PartEFI/
+            sudo rm -rf  /OpenWrt/PartEFI/
             sudo umount /OpenWrt/PartExt4/
-            sudo rm -rf  /OpenWrt/PartOVMF/
+            sudo rm -rf  /OpenWrt/PartExt4/
+
         ;;
 
         2)
@@ -102,7 +103,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Creando las particiones..."
           echo ""
-          sudo rm -rf /OpenWrt/PartOVMF/*
+          sudo rm -rf /OpenWrt/PartEFI/*
           sudo rm -rf /OpenWrt/PartExt4/*
           sudo umount $vPrimerDisco"1" 2> /dev/null
           sudo umount $vPrimerDisco"2" 2> /dev/null
@@ -111,17 +112,12 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           # Crear tabla de particiones GPT
             sudo parted -s $vPrimerDisco mklabel gpt
           # Crear la partición OVMF
-            #sudo parted -s $vPrimerDisco mkpart OVMF ext4 1MiB 201MiB
-            sudo parted -s $vPrimerDisco mkpart OVMF ext4 1MiB 1025MiB
+            sudo parted -s $vPrimerDisco mkpart PartEFI ext4 1MiB 1025MiB
           # Crear la partición ext4
-            # Obtener la cantidad de espacio libre disonible para particionar
-              #vCantEspacioLibre=$(parted "$vPrimerDisco" print free | grep ree | tail -n1 | sed 's-MB--g' | sed 's-  - -g' | sed 's-  - -g' | cut -d' ' -f5)
-              #vCantEspacioAUsar=$((vCantEspacioLibre - 1024))
-            #sudo parted -s "$vPrimerDisco" mkpart OpenWrt ext4 201MiB "$vCantEspacioAUsar"MiB
-            sudo parted -s "$vPrimerDisco" mkpart OpenWrt ext4 1025MiB 3073MiB
+            sudo parted -s "$vPrimerDisco" mkpart PartOpenWrt ext4 1025MiB 3073MiB
           # Crear la partición de intercambio
             #sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3072MiB 100%
-            sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3073MiB 4097MiB
+            sudo parted -s $vPrimerDisco mkpart PartIntercambio ext4 3073MiB 4097MiB
 
         ;;
 
