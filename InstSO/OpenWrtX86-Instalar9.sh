@@ -36,8 +36,7 @@ echo ""
     echo -e "${vColorRojo}    El paquete dialog no está instalado. Iniciando su instalación...${vFinColor}"
     echo ""
     sudo sed -i -e 's|main restricted|main universe restricted|g' /etc/apt/sources.list
-    sudo apt-get -y update
-    sudo apt-get -y install dialog
+    sudo apt-get -y update && sudo apt-get -y install dialog
     echo ""
   fi
 
@@ -260,8 +259,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "      El paquete tar no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
-              sudo apt-get -y install tar
+              sudo apt-get -y update && sudo apt-get -y install tar
               echo ""
             fi
           sudo tar -xf /OpenWrt/PartEFI/rootfs.tar.gz -C /OpenWrt/PartExt4/
@@ -280,11 +278,12 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo "  option ipaddr '"'127.0.0.1'"'"  >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option netmask '"'255.0.0.0'"'" >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo ""                                 >> /OpenWrt/PartEFI/scripts/network'
-          sudo su -c 'echo "config interface '"'i_wan'"'"     >> /OpenWrt/PartEFI/scripts/network'
+          sudo su -c 'echo "config interface '"'intwan'"'"    >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option ifname '"'eth0'"'"       >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option proto '"'dhcp'"'"        >> /OpenWrt/PartEFI/scripts/network'
-          sudo rm -rf                               /OpenWrt/PartExt4/etc/config/network
-          sudo cp /OpenWrt/PartEFI/scripts/network /OpenWrt/PartExt4/etc/config/
+          sudo rm -f                               /OpenWrt/PartExt4/etc/config/network
+          sudo mv /OpenWrt/PartEFI/scripts/network /OpenWrt/PartExt4/etc/config/
+          sudo rm -rf /OpenWrt/PartEFI/scripts/
 
         ;;
 
@@ -299,8 +298,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
-              sudo apt-get -y install wget
+              sudo apt-get -y update && sudo apt-get -y install wget
               echo ""
             fi
           sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
@@ -332,12 +330,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update
-              sudo apt-get -y install wget
+              sudo apt-get -y update && sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-Configurar.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
-          sudo chmod +x                                                                                              /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo chmod +x                                                                                                  /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
 
         ;;
 
@@ -357,7 +354,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         15)
 
           echo ""
-          echo "  Instalando Midnight Commander para poder visualizar los cambios realizados..."
+          echo "  Instalando paquetes para poder visualizar los cambios realizados..."
           echo ""
           sudo apt-get -y install mc
           sudo apt-get -y install gparted
