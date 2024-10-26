@@ -114,7 +114,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo parted -s $vPrimerDisco mkpart OVMF ext4 1MiB 201MiB
           # Crear la partición ext4
             # Obtener la cantidad de espacio libre disonible para particionar
-              vCantEspacioLibre=$(parted "$vPrimerDisco" print free | grep ree | tail -n1 | sed 's-MB--g' | sed 's-  - -g' | sed 's-  - -g' | cut -d' ' -f4) 
+              vCantEspacioLibre=$(parted "$vPrimerDisco" print free | grep ree | tail -n1 | sed 's-MB--g' | sed 's-  - -g' | sed 's-  - -g' | cut -d' ' -f5)
+              vCantEspacioAUsar=$($(vCantEspacioLibre / 100 * 90))
             sudo parted -s "$vPrimerDisco" mkpart OpenWrt ext4 201MiB 24580MiB
           # Crear la partición de intercambio
             sudo parted -s $vPrimerDisco mkpart Intercambio ext4 24580MiB 100%
