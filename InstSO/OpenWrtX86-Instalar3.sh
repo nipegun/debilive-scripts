@@ -120,7 +120,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             #sudo parted -s "$vPrimerDisco" mkpart OpenWrt ext4 201MiB "$vCantEspacioAUsar"MiB
             sudo parted -s "$vPrimerDisco" mkpart OpenWrt ext4 1024MiB 3072MiB
           # Crear la partición de intercambio
-            sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3072MiB 100%
+            #sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3072MiB 100%
+            sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3072MiB 4096MiB
 
         ;;
 
