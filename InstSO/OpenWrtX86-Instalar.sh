@@ -59,9 +59,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
     11 "Copiar el script de instalación de paquetes" on
     12 "Copiar el script de instalación de los o-scripts" on
     13 "Copiar el script de preparación de OpenWrt para funcionar como una MV de Proxmox" on
-    14 "Mover copia de seguridad de la instalación anterior a la nueva instalación" on
-    15 "Instalar GPartEd y Midnight Commander para poder visualizar los cambios realizados" on
-    16 "Apagar la máquina virtual" off
+    14 "Copiar el script de preparación de OpenWrt para funcionar como un laboratorio de ciberseguridad" on
+    15 "Mover copia de seguridad de la instalación anterior a la nueva instalación" on
+    16 "Instalar GPartEd y Midnight Commander para poder visualizar los cambios realizados" on
+    17 "Apagar la máquina virtual" off
   )
   choices=$("${menu[@]}" "${opciones[@]}" 2>&1 >/dev/tty)
 
@@ -278,7 +279,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo "  option ipaddr '"'127.0.0.1'"'"  >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option netmask '"'255.0.0.0'"'" >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo ""                                 >> /OpenWrt/PartEFI/scripts/network'
-          sudo su -c 'echo "config interface '"'intwan'"'"    >> /OpenWrt/PartEFI/scripts/network'
+          sudo su -c 'echo "config interface '"'wan'"'"       >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option ifname '"'eth0'"'"       >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option proto '"'dhcp'"'"        >> /OpenWrt/PartEFI/scripts/network'
           sudo rm -f                               /OpenWrt/PartExt4/etc/config/network
@@ -328,7 +329,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo "    El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
               sudo apt-get -y update && sudo apt-get -y install wget
               echo ""
@@ -338,7 +339,28 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
         ;;
 
+
         14)
+
+          echo ""
+          echo "  Copiando el script de preparación de OpenWrt para funcionar como un laboratorio de ciberseguridad..."
+          echo ""
+          # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
+            if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "    El paquete wget no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update && sudo apt-get -y install wget
+              echo ""
+            fi
+          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+          sudo chmod +x                                                                                               /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+
+        ;;
+
+
+
+        15)
 
           echo ""
           echo "  Moviendo copia de seguridad de la instalación anterior a la instalación nueva..."
@@ -351,7 +373,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo rm -rf  /CopSegOpenWrt/
         ;;
 
-        15)
+        16)
 
           echo ""
           echo "  Instalando paquetes para poder visualizar los cambios realizados..."
@@ -361,7 +383,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
         ;;
 
-        16)
+        17)
 
           echo ""
           echo "  Apagando la máquina virtual..."
