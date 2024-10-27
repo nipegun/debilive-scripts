@@ -264,6 +264,14 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
           sudo tar -xf /OpenWrt/PartEFI/rootfs.tar.gz -C /OpenWrt/PartExt4/
+          sudo mkdir /OpenWrt/PartExt4/boot/efi/
+          echo "config mount"                        > /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option target '/boot/efi'"        >> /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option device '"$vPrimerDisco"1'" >> /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option fstype 'vfat'"             >> /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option options 'defaults'"        >> /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option enabled '1'"               >> /OpenWrt/PartExt4/etc/config/fstab
+          echo "  option enabled_fsck '1'"          >> /OpenWrt/PartExt4/etc/config/fstab
 
         ;;
 
