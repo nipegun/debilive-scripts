@@ -205,19 +205,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Creando el archivo de configuración para Grub (grub.cfg)..."
           echo ""
           sudo mkdir -p /OpenWrt/PartEFI/EFI/OpenWrt/ 2> /dev/null
-          sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                                                            > /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'terminal_input console serial; terminal_output console serial'                                                                       >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo ''                                                                                                                                    >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'set default="'"0"'"'                                                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'set timeout="'"1"'"'                                                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c 'echo "set root='"'(hd0,2)'"'"                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg'
-          sudo su -c "echo ''                                                                                                                                    >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'menuentry "'"OpenWrt"'" {'                                                                                                           >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '  linux /boot/generic-kernel.bin root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '}'                                                                                                                                   >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'menuentry "'"OpenWrt (failsafe)"'" {'                                                                                                >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '  linux /boot/generic-kernel.bin failsafe=true root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd' >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '}'                                                                                                                                   >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                                                       > /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'terminal_input console serial; terminal_output console serial'                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'set default="'"0"'"'                                                                                                            >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'set timeout="'"1"'"'                                                                                                            >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c 'echo "set root='"'(hd0,2)'"'"                                                                                                         >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg'
+          sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'menuentry "'"OpenWrt"'" {'                                                                                                      >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  linux /generic-kernel.bin root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'menuentry "'"OpenWrt (failsafe)"'" {'                                                                                           >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  linux /generic-kernel.bin failsafe=true root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd' >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
 
         ;;
 
@@ -243,7 +243,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y update && sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/boot/generic-kernel.bin
+          sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/generic-kernel.bin
 
           echo ""
           echo "    Bajando el archivo con el sistema root..."
@@ -264,26 +264,26 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
           sudo tar -xf /OpenWrt/PartEFI/rootfs.tar.gz -C /OpenWrt/PartExt4/
-          sudo mkdir /OpenWrt/PartExt4/boot/efi/
+#         sudo mkdir /OpenWrt/PartExt4/boot/efi/
 
-          echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option anon_swap '0'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option anon_mount '0'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option auto_swap '1'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option auto_mount '1'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option delay_root '5'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option check_fs '0'"        >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "config mount"                 >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option target '/boot/efi'"  >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option fstype 'vfat'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option label 'EFI'"         >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "config swap"                  >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option label 'Intercambio'" >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option anon_swap '0'"       >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option anon_mount '0'"      >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option auto_swap '1'"       >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option auto_mount '1'"      >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option delay_root '5'"      >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option check_fs '0'"        >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "config mount"                 >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option target '/boot/efi'"  >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option fstype 'vfat'"       >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option label 'EFI'"         >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "config swap"                  >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo "  option label 'Intercambio'" >> /OpenWrt/PartExt4/etc/config/fstab
+#          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
 
         ;;
 
