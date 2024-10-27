@@ -10,7 +10,7 @@ Por ejemplo:
 
 
 ```
-curl -s https://raw.githubusercontent.com/nipegun/debilive-scripts-scripts/main/OpenWrtX86-InstalarEnMVDeProxmox.sh | bash
+curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts-scripts/main/OpenWrtX86-InstalarEnMVDeProxmox.sh | bash
 ```
 
 o
