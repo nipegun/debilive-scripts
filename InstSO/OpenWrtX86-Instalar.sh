@@ -205,7 +205,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Creando el archivo de configuración para Grub (grub.cfg)..."
           echo ""
           # Determinar el PartUUID de la partición ext4
-            vPartUUID=$()
+            vPartUUID=$(blkid -s PARTUUID -o value "$vPrimerDisco"2)
           sudo mkdir -p /OpenWrt/PartEFI/EFI/OpenWrt/ 2> /dev/null
           sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                                                       > /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'terminal_input console serial; terminal_output console serial'                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
