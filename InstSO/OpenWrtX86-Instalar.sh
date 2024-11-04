@@ -275,32 +275,32 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
           sudo tar -xf /OpenWrt/PartEFI/rootfs.tar.gz -C /OpenWrt/PartExt4/
-          sudo mkdir /OpenWrt/PartExt4/boot/efi/
+          #sudo mkdir /OpenWrt/PartExt4/boot/efi/
 
-          echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option anon_swap '0'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option anon_mount '0'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option auto_swap '1'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option auto_mount '1'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option delay_root '5'"      >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option check_fs '0'"        >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "config mount"                 >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option target '/boot/efi'"  >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option device 'UUIDEFI=x'"  >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option fstype 'vfat'"       >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "config swap"                  >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option device 'UUIDSWAP=x'" >> /OpenWrt/PartExt4/etc/config/fstab
-          echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
-          echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option anon_swap '0'"       >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option anon_mount '0'"      >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option auto_swap '1'"       >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option auto_mount '1'"      >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option delay_root '5'"      >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option check_fs '0'"        >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "config mount"                 >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option target '/boot/efi'"  >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option device 'UUIDEFI=x'"  >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option fstype 'vfat'"       >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "config swap"                  >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option device 'UUIDSWAP=x'" >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
+          #echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
           # Determinar el PARTUUID de la partición EFI
-            vPartUUIDefi=$(blkid -s PARTUUID -o value "$vPrimerDisco"1)
-          sed -i -e "s|UUIDEFI=x|PARTUUID=$vPartUUIDefi|g"  /OpenWrt/PartExt4/etc/config/fstab
+            #vPartUUIDefi=$(blkid -s PARTUUID -o value "$vPrimerDisco"1)
+          #sed -i -e "s|UUIDEFI=x|PARTUUID=$vPartUUIDefi|g"  /OpenWrt/PartExt4/etc/config/fstab
           # Determinar el PARTUUID de la partición swap
-            vPartUUIDswap=$(blkid -s PARTUUID -o value "$vPrimerDisco"3)
-          sed -i -e "s|UUIDSWAP=x|PARTUUID=$vPartUUIDswap|g" /OpenWrt/PartExt4/etc/config/fstab
+            #vPartUUIDswap=$(blkid -s PARTUUID -o value "$vPrimerDisco"3)
+          #sed -i -e "s|UUIDSWAP=x|PARTUUID=$vPartUUIDswap|g" /OpenWrt/PartExt4/etc/config/fstab
 
         ;;
 
