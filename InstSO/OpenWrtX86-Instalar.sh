@@ -210,7 +210,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Creando el archivo de configuración para Grub (grub.cfg)..."
           echo ""
           # Determinar el PartUUID de la partición ext4
-            vPartUUID=$(blkid -s PARTUUID -o value "$vPrimerDisco"2)
+            vPartUUID=$(sudo blkid -s PARTUUID -o value "$vPrimerDisco"2)
           sudo mkdir -p /OpenWrt/PartEFI/EFI/OpenWrt/ 2> /dev/null
           sudo su -c "echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1 --rtscts=off'                                                       > /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'terminal_input console serial; terminal_output console serial'                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
@@ -306,10 +306,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           #echo "  option enabled '1'"         >> /OpenWrt/PartExt4/etc/config/fstab
           #echo ""                             >> /OpenWrt/PartExt4/etc/config/fstab
           # Determinar el PARTUUID de la partición EFI
-            #vPartUUIDefi=$(blkid -s PARTUUID -o value "$vPrimerDisco"1)
+            #vPartUUIDefi=$(sudo blkid -s PARTUUID -o value "$vPrimerDisco"1)
           #sed -i -e "s|UUIDEFI=x|PARTUUID=$vPartUUIDefi|g"  /OpenWrt/PartExt4/etc/config/fstab
           # Determinar el PARTUUID de la partición swap
-            #vPartUUIDswap=$(blkid -s PARTUUID -o value "$vPrimerDisco"3)
+            #vPartUUIDswap=$(sudo blkid -s PARTUUID -o value "$vPrimerDisco"3)
           #sed -i -e "s|UUIDSWAP=x|PARTUUID=$vPartUUIDswap|g" /OpenWrt/PartExt4/etc/config/fstab
 
         ;;
