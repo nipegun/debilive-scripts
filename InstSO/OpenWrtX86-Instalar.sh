@@ -342,7 +342,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
-              echo "  wget no está instalado. Iniciando su instalación..."
+              echo "    El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
               sudo apt-get -y update
               sudo apt-get -y install wget
