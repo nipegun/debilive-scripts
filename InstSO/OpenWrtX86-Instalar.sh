@@ -216,7 +216,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c "echo 'terminal_input console serial; terminal_output console serial'                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'set default=0'                                                                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo 'set timeout=1'                                                                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo 'set timeout=2'                                                                                                                  >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'menuentry "'"OpenWrt (root mediante PARTUUID)"'" {'                                                                             >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '  search --file /generic-kernel.bin --set=root'                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
