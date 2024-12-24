@@ -629,12 +629,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-ptp_*.ipk"    -exec mv {} "2-kmod-ptp.ipk"    \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-e1000e_*.ipk" -exec mv {} "3-kmod-e1000e.ipk" \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh' | sudo tee /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  sudo sh -c "echo '#!/bin/sh'                                                            > /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh"
-	          sudo sh -c "echo ''                                                                    >> /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh"
-                  sudo sh -c "echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    >> /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh"
-                  sudo sh -c "echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    >> /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh"
-                  sudo sh -c "echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' >> /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh"
+                  echo '#!/bin/sh'                                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+		  echo ''                                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
 
               # Ethernet Intel I225-V (Por orden de dependencias)/OpenWrt/PartEFI/Paquet
                 sudo mkdir -p /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/
