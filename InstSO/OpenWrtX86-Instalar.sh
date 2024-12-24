@@ -36,7 +36,8 @@ echo ""
     echo -e "${vColorRojo}    El paquete dialog no está instalado. Iniciando su instalación...${vFinColor}"
     echo ""
     sudo sed -i -e 's|main restricted|main universe restricted|g' /etc/apt/sources.list
-    sudo apt-get -y update && sudo apt-get -y install dialog
+    sudo apt-get -y update
+    sudo apt-get -y install dialog
     echo ""
   fi
 
@@ -155,7 +156,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "    El paquete curl no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install curl
+              sudo apt-get -y update
+              sudo apt-get -y install curl
               echo ""
             fi
   
@@ -191,7 +193,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "    El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install wget
+              sudo apt-get -y update
+              sudo apt-get -y install wget
               echo ""
             fi
           # sudo wget http://hacks4geeks.com/_/premium/descargas/OpenWrtX86/PartEFI/EFI/Boot/bootx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
@@ -212,21 +215,24 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'set default="'"0"'"'                                                                                                            >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'set timeout="'"1"'"'                                                                                                            >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c 'echo "set root='"'(hd0,2)'"'"                                                                                                         >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg'
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'menuentry "'"OpenWrt desde PARTUUID"'" {'                                                                                       >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  search --file /generic-kernel.bin --set=root'                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '  linux /generic-kernel.bin root=PARTUUID=$vPartUUID rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'     >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'menuentry "'"OpenWrt desde /dev/sda2"'" {'                                                                                      >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '  #linux /generic-kernel.bin root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  search --file /generic-kernel.bin --set=root'                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  linux /generic-kernel.bin root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'menuentry "'"OpenWrt desde /dev/vda2"'" {'                                                                                      >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
-          sudo su -c "echo '  #linux /generic-kernel.bin root=/dev/vda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  search --file /generic-kernel.bin --set=root'                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  linux /generic-kernel.bin root=/dev/vda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd'               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo ''                                                                                                                               >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo 'menuentry "'"OpenWrt (failsafe)"'" {'                                                                                           >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
+          sudo su -c "echo '  search --file /generic-kernel.bin --set=root'                                                                                 >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '  linux /generic-kernel.bin failsafe=true root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 console=ttyS0,115200n8 noinitrd' >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
           sudo su -c "echo '}'                                                                                                                              >> /OpenWrt/PartEFI/EFI/OpenWrt/grub.cfg"
 
@@ -251,7 +257,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "      El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install wget
+              sudo apt-get -y update
+              sudo apt-get -y install wget
               echo ""
             fi
           sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-kernel.bin -O /OpenWrt/PartExt4/generic-kernel.bin
@@ -271,7 +278,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "      El paquete tar no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install tar
+              sudo apt-get -y update
+              sudo apt-get -y install tar
               echo ""
             fi
           sudo tar -xf /OpenWrt/PartEFI/rootfs.tar.gz -C /OpenWrt/PartExt4/
@@ -336,7 +344,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "  wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install wget
+              sudo apt-get -y update
+              sudo apt-get -y install wget
               echo ""
             fi
           sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
@@ -368,7 +377,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
               echo "    El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install wget
+              sudo apt-get -y update
+              sudo apt-get -y install wget
               echo ""
             fi
           sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
@@ -382,12 +392,13 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Copiando el script de preparación de OpenWrt para funcionar como un laboratorio de ciberseguridad..."
           echo ""
-          # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
+          # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo
             if [[ $(dpkg-query -s wget 2>/dev/null | grep installed) == "" ]]; then
               echo ""
               echo "    El paquete wget no está instalado. Iniciando su instalación..."
               echo ""
-              sudo apt-get -y update && sudo apt-get -y install wget
+              sudo apt-get -y update
+              sudo apt-get -y install wget
               echo ""
             fi
           sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
