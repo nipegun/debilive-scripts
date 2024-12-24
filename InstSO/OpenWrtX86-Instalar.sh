@@ -431,12 +431,22 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Descargando paquetes ipk esenciales a la partición EFI..."
           echo ""
+          # Comprobar si el paquete curl está instalado. Si no lo está, instalarlo
+            if [[ $(dpkg-query -s curl 2>/dev/null | grep installed) == "" ]]; then
+              echo ""
+              echo "    El paquete curl no está instalado. Iniciando su instalación..."
+              echo ""
+              sudo apt-get -y update
+              sudo apt-get -y install curl
+              echo ""
+            fi
 	  # Obtener el número de última versión estable
             vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | head -n1 | cut -d'"' -f2 | cut -d'/' -f2)
           # Obtener versión de kernel y nro de compilación
             vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
 
           # Borrar todos los paquetes viejos
+	    sudo mkdir /OpenWrt/PartEFI/Paquetes/ 2> /dev/null
             rm -rf /OpenWrt/PartEFI/Paquetes/*
 
           # Descargar paquetes nuevos
