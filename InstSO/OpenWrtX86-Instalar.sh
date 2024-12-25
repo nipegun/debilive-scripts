@@ -13,8 +13,11 @@
 #   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-/dev/sda-/dev/vda-g' | bash
 # ----------
 
-vNumUltVer=$(curl -sL openwrt.org | grep urrent | grep "stable" | grep ":" | cut -d":" -f2 | cut -d"." -f1 | sed 's- --g' | cut -d"t" -f2)
-#vNumUltVer="22"
+# Obtener el número de última versión estable
+  vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | head -n1 | cut -d'"' -f2 | cut -d'/' -f2)
+          # Obtener versión de kernel y nro de compilación
+            vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
+
 
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
 vPrimerDisco="/dev/sda"
@@ -150,7 +153,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
         5)
 
           echo ""
-          echo "  Determinando la última versión de OpenWrt..."
+          echo "  Determinando la última versión de estable de OpenWrt X86..."
           echo ""
 
           # Comprobar si el paquete curl está instalado. Si no lo está, instalarlo.
@@ -162,11 +165,9 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install curl
               echo ""
             fi
-  
-          VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep $vNumUltVer | head -n 1 | cut -d'/' -f 5)
 
           echo ""
-          echo "    La última versión estable de OpenWrt es la $VersOpenWrt."
+          echo "    La última versión estable de OpenWrt es la $vUltVersOpenWrtX86Estable."
           echo ""
 
         ;;
@@ -242,9 +243,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
         9)
 
-          VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep $vNumUltVer | head -n 1 | cut -d'/' -f 5)
           echo ""
-          echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt..."
+          echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $vUltVersOpenWrtX86Estable..."
           echo ""
           echo ""
           echo "    Borrando el contenido de la partición ext4..."
@@ -264,7 +264,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$VersOpenWrt/targets/x86/64/openwrt-$VersOpenWrt-x86-64-generic-ext4-combined-efi.img.gz -O /tmp/OpenWrtCombinedEFI.img.gz
+          sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/openwrt-$vUltVersOpenWrtX86Estable-x86-64-generic-ext4-combined-efi.img.gz -O /tmp/OpenWrtCombinedEFI.img.gz
 
           echo ""
           echo "    Descomprimiendo el archivo..."
@@ -447,8 +447,6 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install curl
               echo ""
             fi
-	  # Obtener el número de última versión estable
-            vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | head -n1 | cut -d'"' -f2 | cut -d'/' -f2)
           # Obtener versión de kernel y nro de compilación
             vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
 
