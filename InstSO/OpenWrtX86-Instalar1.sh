@@ -242,6 +242,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
         9)
 
+          VersOpenWrt=$(curl --silent https://downloads.openwrt.org | grep rchive | grep eleases | grep OpenWrt | grep $vNumUltVer | head -n 1 | cut -d'/' -f 5)
           echo ""
           echo "  Creando la estructura de carpetas y archivos en la partición ext4 con OpenWrt $VersOpenWrt..."
           echo ""
