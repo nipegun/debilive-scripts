@@ -278,8 +278,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo mkdir /tmp/rootfs/
 	  vDispLBLibre=$(sudo losetup -f)
           udisksctl loop-setup -f /tmp/OpenWrtCombinedEFI.img
-          sudo mount -t auto /dev/"$vDispLBLibre"p1 /tmp/kernel
-          sudo mount -t auto /dev/"$vDispLBLibre"p2 /tmp/rootfs
+          sudo mount -t auto "$vDispLBLibre"p1 /tmp/kernel
+          sudo mount -t auto "$vDispLBLibre"p2 /tmp/rootfs
 
           # Comprobar si el paquete tar está instalado. Si no lo está, instalarlo.
             if [[ $(dpkg-query -s tar 2>/dev/null | grep installed) == "" ]]; then
