@@ -801,6 +801,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7915e_")
 	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 
+              # Mediatek MT7921K (Por orden de dependencias)
+                sudo mkdir -p /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7921K/
+                cd /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7921K/
+	        # kmod-mt7921-firmware
+                  vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921e-firmware_")
+	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+		# kmod-mt7921e
+                  vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921e_")
+	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	   	# kmod-mt7921-common
+                  vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921-common_")
+	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+
               # Atheros 9k
 	      # Atheros 10k
             # Driver WiFi
