@@ -8,9 +8,14 @@
 # ----------
 #  Script de NiPeGun para instalar OpenWrt en una máquina virtual de ProxmoxVE inciando desde Debian Live 
 #
-# Ejecución remota:
+# Ejecución remota para disco sda:
 #   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | bash
+#
+# Ejecución remota para disco vda:
 #   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-/dev/sda-/dev/vda-g' | bash
+#
+# Ejecución remota con disco sda de 1GB
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-1025MiB-128MiB-'g | sed 's-3073MiB-512MiB-g' | sed 's-4097MiB-1023MiB-g' | bash
 # ----------
 
 # Obtener el número de última versión estable
