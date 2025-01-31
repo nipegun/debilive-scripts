@@ -299,6 +299,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 	  sudo mkdir -p /OpenWrt/PartExt4/boot/efi/
           sudo cp /tmp/kernel/boot/vmlinuz /OpenWrt/PartExt4/boot/vmlinuz
 
+          # Hacer que la partición EFI se monte en /boot/efi
+	    sed -i -e 's|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot/efi|g' /OpenWrt/PartExt4/lib/preinit/79_move_config
+            sed -i -e 's|mount --bind /boot/boot /boot|mount --bind /boot/efi /boot/efi|g'                                                    /OpenWrt/PartExt4/lib/preinit/79_move_config
+
           #echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
           #echo "  option anon_swap '0'"       >> /OpenWrt/PartExt4/etc/config/fstab
           #echo "  option anon_mount '0'"      >> /OpenWrt/PartExt4/etc/config/fstab
