@@ -368,9 +368,9 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
           sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
-          echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                    >> /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
-          echo "reboot"                                                                                                        >> /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
-          sudo chmod +x                                                                                                           /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
+          echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                    | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
+          echo "reboot"                                                                                                        | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
+          sudo chmod +x                                                                                                                      /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
         ;;
 
         12)
