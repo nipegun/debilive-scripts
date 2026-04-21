@@ -259,7 +259,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo rm -rf /OpenWrt/PartExt4/*
 
           echo ""
-          echo "    Bajando la imagen combinada de kernel y rootfs..."
+          echo "    Bajando la  combinada de kernel y rootfs..."
           echo ""
           sudo mkdir -p /OpenWrt/PartExt4/boot 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
@@ -285,6 +285,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
 		  # Desmontaje de lo previo
             sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 sudo losetup -d
+losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 -I{} sh -c 'sudo umount {}p* 2>/dev/null; sudo losetup -d {}'
 		  # kernel
             sudo umount /tmp/kernel/
             sudo rm -rf /tmp/kernel/
