@@ -283,10 +283,16 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "    Montando la imagen..."
           echo ""
-		  sudo rm -rf /tmp/kernel/
-          sudo mkdir /tmp/kernel/
-		  sudo rm -rf /tmp/rootfs/
-          sudo mkdir /tmp/rootfs/
+		  # Desmontaje de lo previo
+            sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 sudo losetup -d
+		  # kernel
+            sudo umount /tmp/kernel/
+            sudo rm -rf /tmp/kernel/
+            sudo mkdir /tmp/kernel/
+          # rootfs
+            sudo umount /tmp/rootfs/
+            sudo rm -rf /tmp/rootfs/
+            sudo mkdir /tmp/rootfs/
 	      vDispLBLibre=$(sudo losetup -f)
           udisksctl loop-setup -f /tmp/OpenWrtCombinedEFI.img
           sudo mount -t auto "$vDispLBLibre"p1 /tmp/kernel
