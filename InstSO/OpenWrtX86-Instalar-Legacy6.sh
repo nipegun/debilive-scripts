@@ -519,17 +519,17 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciids_*.ipk"     -exec mv {} "08-pciids.ipk"     \;
             sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciutils_*.ipk"   -exec mv {} "09-pciutils.ipk"   \;
           # Preparar script de instalación de lspci
-            echo '#!/bin/sh'                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-		    echo ''                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/01-libc.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/02-zlib.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/03-libkmod.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/04-libgcc1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/05-libpthread.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/06-librt.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/07-libpci.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/08-pciids.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            echo 'opkg install /boot/Paquetes/lspci/09-pciutils.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
+            echo '#!/bin/sh'                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+		    echo ''                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/01-libc.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/02-zlib.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/03-libkmod.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/04-libgcc1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/05-libpthread.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/06-librt.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/07-libpci.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/08-pciids.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/09-pciutils.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
             sudo chmod +x                                                            /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
           # mc
             sudo mkdir -p /OpenWrt/PartEFI/Paquetes/mc/
@@ -604,25 +604,25 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "libssh2-1_*.ipk"   -exec mv {} "16-libssh2-1.ipk"   \;
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "mc_*.ipk"          -exec mv {} "17-mc.ipk"          \;
               # Preparar script de instalación de mc
-                echo '#!/bin/sh'                                              | sudo tee    /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-				echo ''                                                       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/01-libc.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/02-libgcc1.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/03-libpthread.ipk'  | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/04-librt.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/05-zlib.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/06-libffi.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/07-libattr.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/08-libpcre2.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/09-glib2.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/10-terminfo.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/11-libncurses6.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/12-libuuid1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/13-libblkid1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/14-libmount1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/15-libopenssl3.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/16-libssh2-1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/17-mc.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
+                echo '#!/bin/sh'                                              | sudo tee    /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+				echo ''                                                       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/01-libc.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/02-libgcc1.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/03-libpthread.ipk'  | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/04-librt.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/05-zlib.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/06-libffi.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/07-libattr.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/08-libpcre2.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/09-glib2.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/10-terminfo.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/11-libncurses6.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/12-libuuid1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/13-libblkid1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/14-libmount1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/15-libopenssl3.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/16-libssh2-1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/17-mc.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
                 sudo chmod +x                                                               /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
                 #find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "*.ipk" | while read -r vArchivo; do
                 #  # Obtener el nombre base del archivo (sin la ruta)
@@ -656,11 +656,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-ptp_*.ipk"    -exec mv {} "2-kmod-ptp.ipk"    \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-e1000e_*.ipk" -exec mv {} "3-kmod-e1000e.ipk" \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo ''                                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo ''                                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                            /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
 
               # Ethernet Intel I225-V (Por orden de dependencias)/OpenWrt/PartEFI/Paquet
@@ -672,9 +672,9 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 # Renombrar archivos
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/ -type f -name "kmod-igc_*.ipk"    -exec mv {} "1-kmod-igc.ipk"    \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                        | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
-                  echo ''                                                                 | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I225-V/1-kmod-igc.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                        | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
+                  echo ''                                                                 | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I225-V/1-kmod-igc.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                         /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
 
               # Ethernet Intel gigabit (Por orden de dependencias)
@@ -702,13 +702,13 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-hwmon-core_*.ipk"   -exec mv {} "4-kmod-hwmon-core.ipk"   \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-igb_*.ipk"          -exec mv {} "5-kmod-igb.ipk"          \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                                  | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo ''                                                                           | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/1-kmod-i2c-core.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/2-kmod-i2c-algo-bit.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/3-kmod-ptp.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/4-kmod-hwmon-core.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/5-kmod-igb.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                                  | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo ''                                                                           | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/1-kmod-i2c-core.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/2-kmod-i2c-algo-bit.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/3-kmod-ptp.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/4-kmod-hwmon-core.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/5-kmod-igb.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                                   /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
 
 	      # Realtek RTL8125 (Por orden de dependencias)
@@ -760,19 +760,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "kmod-mdio-devres_*.ipk" -exec mv {} "10-kmod-mdio-devres.ipk" \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "kmod-r8169_*.ipk"       -exec mv {} "11-kmod-r8169.ipk"       \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                                    | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo ''                                                                             | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/01-kmod-mii.ipk'         | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/02-libgcc1.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/03-libpthread.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/04-librt.ipk'            | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/05-r8169-firmware.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/06-kmod-libphy.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/07-kmod-phy-realtek.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/08-kmod-fixed-phy.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/09-kmod-of-mdio.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/10-kmod-mdio-devres.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/11-kmod-r8169.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                                    | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo ''                                                                             | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/01-kmod-mii.ipk'         | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/02-libgcc1.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/03-libpthread.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/04-librt.ipk'            | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/05-r8169-firmware.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/06-kmod-libphy.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/07-kmod-phy-realtek.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/08-kmod-fixed-phy.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/09-kmod-of-mdio.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/10-kmod-mdio-devres.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/11-kmod-r8169.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                                     /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
 
 	    # Wireless
