@@ -206,9 +206,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          # sudo wget -q --show-progress http://hacks4geeks.com/_/premium/descargas/OpenWrtX86/PartEFI/EFI/Boot/bootx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
-          # sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/Recursos/bootx64openwrt.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
-          sudo wget -q --show-progress https://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/grubx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
+          # sudo wget -q --show-progress https://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/grubx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/Recursos/grubx64.efi-openwrt -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
 
         ;;
 
