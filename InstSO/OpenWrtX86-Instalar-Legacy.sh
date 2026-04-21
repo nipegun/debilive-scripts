@@ -379,7 +379,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
+          sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
           echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                    | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
           echo "reboot"                                                                                                        | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
           sudo chmod +x                                                                                                                      /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
@@ -390,11 +390,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Copiando el script de instalación de los o-scripts..."
           echo ""
-          sudo su -c "echo '#!/bin/sh'                                                                                                          > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
-          sudo su -c 'echo ""                                                                                                                  >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "wget -q --show-progress -O - https://raw.githubusercontent.com/nipegun/o-scripts/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                                        >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo chmod +x                                                                                                                           /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
+          sudo su -c "echo '#!/bin/sh'                                                                                                                     > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
+          sudo su -c 'echo ""                                                                                                                             >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "wget -q --show-progress -O - https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                                                   >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo chmod +x                                                                                                                                      /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
 
         ;;
 
@@ -412,8 +412,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
-          sudo chmod +x                                                                                                  /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo chmod +x                                                                                                                                /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
 
         ;;
 
@@ -431,8 +431,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-RouterBaremetal.sh -O /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
-          sudo chmod +x                                                                                                      /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-RouterBaremetal.sh -O /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
+          sudo chmod +x                                                                                                                                    /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
 
         ;;
 
@@ -450,8 +450,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
-          sudo chmod +x                                                                                               /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+          sudo chmod +x                                                                                                                             /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
 
         ;;
 
