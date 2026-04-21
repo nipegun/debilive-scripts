@@ -20,9 +20,8 @@
 
 # Obtener el número de última versión estable
   vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | head -n1 | cut -d'"' -f2 | cut -d'/' -f2)
-          # Obtener versión de kernel y nro de compilación
-            vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
-
+# Obtener versión de kernel y nro de compilación
+  vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
 
 vFechaDeEjec=$(date +A%Y-M%m-D%d@%T)
 vPrimerDisco="/dev/sda"
@@ -51,7 +50,7 @@ echo ""
 
   # Cambiar resolución de la pantalla
     vNombreDisplay=$(xrandr | grep " connected" | cut -d" " -f1)
-    xrandr --output $vNombreDisplay --mode 1024x768
+    xrandr --output "$vNombreDisplay" --mode 1024x768
 
 menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
   opciones=(
@@ -87,20 +86,22 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Haciendo copia de seguridad de la instalación anterior..."
           echo ""
           # Desmontar discos, si es que están montados
-            sudo umount $vPrimerDisco"1" 2> /dev/null
-            sudo umount $vPrimerDisco"2" 2> /dev/null
-            sudo umount $vPrimerDisco"3" 2> /dev/null
+            sudo umount "$vPrimerDisco""1" 2> /dev/null
+            sudo umount "$vPrimerDisco""2" 2> /dev/null
+            sudo umount "$vPrimerDisco""3" 2> /dev/null
           # Crear particiones para montar
+		    sudo rm -rf /OpenWrt/
             sudo mkdir -p /OpenWrt/PartEFI/
-            sudo mount -t auto $vPrimerDisco"1" /OpenWrt/PartEFI/
+            sudo mount -t auto "$vPrimerDisco""1" /OpenWrt/PartEFI/
             sudo mkdir -p /OpenWrt/PartExt4/
-            sudo mount -t auto $vPrimerDisco"2" /OpenWrt/PartExt4/
+            sudo mount -t auto "$vPrimerDisco""2" /OpenWrt/PartExt4/
           # Crear carpeta donde guardar los archivos
-            sudo mkdir -p /CopSegOpenWrt/$vFechaDeEjec/PartEFI/
-            sudo mkdir -p /CopSegOpenWrt/$vFechaDeEjec/PartExt4/
+		    sudo rm -rf /CopSegOpenWrt/
+            sudo mkdir -p /CopSegOpenWrt/"$vFechaDeEjec"/PartEFI/
+            sudo mkdir -p /CopSegOpenWrt/"$vFechaDeEjec"/PartExt4/
           # Copiar archivos
-            sudo cp -r /OpenWrt/PartEFI/*  /CopSegOpenWrt/$vFechaDeEjec/PartEFI/
-            sudo cp -r /OpenWrt/PartExt4/* /CopSegOpenWrt/$vFechaDeEjec/PartExt4/
+            sudo cp -r /OpenWrt/PartEFI/*  /CopSegOpenWrt/"$vFechaDeEjec"/PartEFI/
+            sudo cp -r /OpenWrt/PartExt4/* /CopSegOpenWrt/"$vFechaDeEjec"/PartExt4/
           # Desmontar partición 
             sudo umount /OpenWrt/PartEFI/
             sudo rm -rf  /OpenWrt/PartEFI/
@@ -116,19 +117,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           sudo rm -rf /OpenWrt/PartEFI/*
           sudo rm -rf /OpenWrt/PartExt4/*
-          sudo umount $vPrimerDisco"1" 2> /dev/null
-          sudo umount $vPrimerDisco"2" 2> /dev/null
-          sudo umount $vPrimerDisco"3" 2> /dev/null
+          sudo umount "$vPrimerDisco""1" 2> /dev/null
+          sudo umount "$vPrimerDisco""2" 2> /dev/null
+          sudo umount "$vPrimerDisco""3" 2> /dev/null
           sudo swapoff -a
           # Crear tabla de particiones GPT
-            sudo parted -s $vPrimerDisco mklabel gpt
+            sudo parted -s "$vPrimerDisco" mklabel gpt
           # Crear la partición EFI
-            sudo parted -s $vPrimerDisco mkpart PartEFI ext4 1MiB 1025MiB
+            sudo parted -s "$vPrimerDisco" mkpart PartEFI ext4 1MiB 1025MiB
           # Crear la partición ext4
             sudo parted -s "$vPrimerDisco" mkpart PartOpenWrt ext4 1025MiB 3073MiB
           # Crear la partición de intercambio
             #sudo parted -s $vPrimerDisco mkpart Intercambio ext4 3072MiB 100%
-            sudo parted -s $vPrimerDisco mkpart PartIntercambio ext4 3073MiB 4097MiB
+            sudo parted -s "$vPrimerDisco" mkpart PartIntercambio ext4 3073MiB 4097MiB
 
         ;;
 
@@ -138,11 +139,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Formateando las particiones..."
           echo ""
           # Formatear la partición para EFI como fat32
-            sudo mkfs -t vfat -F 32 -n EFI $vPrimerDisco"1"
+            sudo mkfs -t vfat -F 32 -n EFI "$vPrimerDisco""1"
           # Formatear la partición para OpenWrt como ext4
-            sudo mkfs -t ext4 -L OpenWrt $vPrimerDisco"2"
+            sudo mkfs -t ext4 -L OpenWrt "$vPrimerDisco""2"
           # Formatear la partición para Intercambio como swap
-            sudo mkswap -L Intercambio $vPrimerDisco"3"
+            sudo mkswap -L Intercambio "$vPrimerDisco""3"
 
         ;;
 
@@ -151,7 +152,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Marcando la partición EFI como esp..."
           echo ""
-          sudo parted -s $vPrimerDisco set 1 esp on
+          sudo parted -s "$vPrimerDisco" set 1 esp on
 
         ;;
 
@@ -205,8 +206,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          # sudo wget http://hacks4geeks.com/_/premium/descargas/OpenWrtX86/PartEFI/EFI/Boot/bootx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
-          sudo wget https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/Recursos/bootx64openwrt.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
+          # sudo wget -q --show-progress https://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/grubx64.efi -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/Recursos/grubx64.efi-openwrt -O /OpenWrt/PartEFI/EFI/Boot/bootx64.efi
 
         ;;
 
@@ -269,19 +270,30 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget --no-check-certificate https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/openwrt-$vUltVersOpenWrtX86Estable-x86-64-generic-ext4-combined-efi.img.gz -O /tmp/OpenWrtCombinedEFI.img.gz
+		  sudo rm -f /tmp/OpenWrtCombinedEFI.img.gz
+          sudo wget -q --show-progress --no-check-certificate https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/openwrt-"$vUltVersOpenWrtX86Estable"-x86-64-generic-ext4-combined-efi.img.gz -O /tmp/OpenWrtCombinedEFI.img.gz
 
           echo ""
           echo "    Descomprimiendo el archivo..."
           echo ""
+		  sudo rm -f /tmp/OpenWrtCombinedEFI.img
           gunzip -fk -c '/tmp/OpenWrtCombinedEFI.img.gz' > /tmp/OpenWrtCombinedEFI.img
 
           echo ""
           echo "    Montando la imagen..."
           echo ""
-          sudo mkdir /tmp/kernel/
-          sudo mkdir /tmp/rootfs/
-	  vDispLBLibre=$(sudo losetup -f)
+		  # Desmontaje de lo previo
+            #sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 sudo losetup -d
+            sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 -I{} sh -c 'sudo umount {}p* 2>/dev/null; sudo losetup -d {}'
+		  # kernel
+            sudo umount /tmp/kernel/
+            sudo rm -rf /tmp/kernel/
+            sudo mkdir /tmp/kernel/
+          # rootfs
+            sudo umount /tmp/rootfs/
+            sudo rm -rf /tmp/rootfs/
+            sudo mkdir /tmp/rootfs/
+	      vDispLBLibre=$(sudo losetup -f)
           udisksctl loop-setup -f /tmp/OpenWrtCombinedEFI.img
           sudo mount -t auto "$vDispLBLibre"p1 /tmp/kernel
           sudo mount -t auto "$vDispLBLibre"p2 /tmp/rootfs
@@ -296,12 +308,12 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
           sudo cp -rf /tmp/rootfs/* /OpenWrt/PartExt4/
-	  sudo mkdir -p /OpenWrt/PartExt4/boot/efi/
+	      sudo mkdir -p /OpenWrt/PartExt4/boot/efi/
           sudo cp /tmp/kernel/boot/vmlinuz /OpenWrt/PartExt4/boot/vmlinuz
 
           # Hacer que la partición EFI se monte en /boot/efi
-	    sudo sed -i -e 's|mkdir -p /boot|mkdir -p /boot/efi|g'                                                                                 /OpenWrt/PartExt4/lib/preinit/79_move_config
-	    sudo sed -i -e 's|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot/efi|g' /OpenWrt/PartExt4/lib/preinit/79_move_config
+	        sudo sed -i -e 's|mkdir -p /boot|mkdir -p /boot/efi|g'                                                                                 /OpenWrt/PartExt4/lib/preinit/79_move_config
+	        sudo sed -i -e 's|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot|mount -t $parttype -o rw,noatime "/dev/$partdev" /boot/efi|g' /OpenWrt/PartExt4/lib/preinit/79_move_config
             sudo sed -i -e 's|mount --bind /boot/boot /boot||g'                                                                                    /OpenWrt/PartExt4/lib/preinit/79_move_config
 
           #echo "config global"                 > /OpenWrt/PartExt4/etc/config/fstab
@@ -367,10 +379,10 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
-          echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                    | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
-          echo "reboot"                                                                                                        | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
-          sudo chmod +x                                                                                                                      /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
+          sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/MVdeProxmox-InstalarPaquetes-Legacy.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
+          echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                           | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
+          echo "reboot"                                                                                                               | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
+          sudo chmod +x                                                                                                                             /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
         ;;
 
         12)
@@ -378,11 +390,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Copiando el script de instalación de los o-scripts..."
           echo ""
-          sudo su -c "echo '#!/bin/sh'                                                                                       > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
-          sudo su -c 'echo ""                                                                                               >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "wget -O - https://raw.githubusercontent.com/nipegun/o-scripts/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                     >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo chmod +x                                                                                                        /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
+          sudo su -c "echo '#!/bin/sh'                                                                                                                     > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
+          sudo su -c 'echo ""                                                                                                                             >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "wget -q --show-progress -O - https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                                                   >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo chmod +x                                                                                                                                      /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
 
         ;;
 
@@ -400,8 +412,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
-          sudo chmod +x                                                                                                  /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-MVdeProxmox.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
+          sudo chmod +x                                                                                                                                /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaMVDeProxmox.sh
 
         ;;
 
@@ -419,8 +431,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-RouterBaremetal.sh -O /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
-          sudo chmod +x                                                                                                      /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-RouterBaremetal.sh -O /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
+          sudo chmod +x                                                                                                                                    /OpenWrt/PartExt4/root/scripts/3-ConfigurarComo-RouterBaremetal.sh
 
         ;;
 
@@ -438,8 +450,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               sudo apt-get -y install wget
               echo ""
             fi
-          sudo wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
-          sudo chmod +x                                                                                               /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+          sudo wget -q --show-progress https://raw.githubusercontent.com/nipegun/o-scripts/refs/heads/master/PostInst/ConfigurarComo-CyberLab.sh -O /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
+          sudo chmod +x                                                                                                                             /OpenWrt/PartExt4/root/scripts/3-PrepararOpenWrtParaCyberLab.sh
 
         ;;
 
@@ -461,118 +473,118 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
 
           # Borrar todos los paquetes viejos
-	    sudo mkdir /OpenWrt/PartEFI/Paquetes/ 2> /dev/null
+	        sudo mkdir /OpenWrt/PartEFI/Paquetes/ 2> /dev/null
             rm -rf /OpenWrt/PartEFI/Paquetes/*
 
           # Descargar paquetes nuevos
 
-	    # lspci (Por orden de dependencias)
+	        # lspci (Por orden de dependencias)
               sudo mkdir -p /OpenWrt/PartEFI/Paquetes/lspci/
               cd /OpenWrt/PartEFI/Paquetes/lspci/
+	        # libc
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep 'libc_')
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/targets/x86/64/packages/$vNomArchivo"
+            # zlib (Depende de libc)
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "zlib_" | grep -v dev)
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/packages/x86_64/base/$vNomArchivo"
+	        # libkmod (Depende de libc, zlib)
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libkmod_")
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/packages/x86_64/packages/$vNomArchivo"
+	        # libgcc1
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libgcc1_")
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/targets/x86/64/packages/$vNomArchivo"
+	        # libpthread (Depende de libgcc1)
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpthread_")
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/targets/x86/64/packages/$vNomArchivo"
+            # librt (Depende de libpthread)
+	          vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "librt_")
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/targets/x86/64/packages/$vNomArchivo"
+            # libpci (Depende de libc)
+	          vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpci_" | grep -v acc)
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/packages/x86_64/packages/$vNomArchivo"
+	        # pciids (Depende de libc)
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "pciids_")
+		      sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/packages/x86_64/packages/$vNomArchivo"
+	        # pciutils (Depende de libc, libkmod, libpci, pciids)
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "pciutils_")
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/packages/x86_64/packages/$vNomArchivo"
+          # Renombrar archivos
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libc_*.ipk"       -exec mv {} "01-libc.ipk"       \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "zlib_*.ipk"       -exec mv {} "02-zlib.ipk"       \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libkmod_*.ipk"    -exec mv {} "03-libkmod.ipk"    \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libgcc1_*.ipk"    -exec mv {} "04-libgcc1.ipk"    \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libpthread_*.ipk" -exec mv {} "05-libpthread.ipk" \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "librt_*.ipk"      -exec mv {} "06-librt.ipk"      \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libpci_*.ipk"     -exec mv {} "07-libpci.ipk"     \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciids_*.ipk"     -exec mv {} "08-pciids.ipk"     \;
+            sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciutils_*.ipk"   -exec mv {} "09-pciutils.ipk"   \;
+          # Preparar script de instalación de lspci
+            echo '#!/bin/sh'                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+		    echo ''                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/01-libc.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/02-zlib.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/03-libkmod.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/04-libgcc1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/05-libpthread.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/06-librt.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/07-libpci.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/08-pciids.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            echo 'opkg install /boot/Paquetes/lspci/09-pciutils.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh > /dev/null
+            sudo chmod +x                                                            /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
+          # mc
+            sudo mkdir -p /OpenWrt/PartEFI/Paquetes/mc/
+            cd /OpenWrt/PartEFI/Paquetes/mc/
 	      # libc
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep 'libc_')
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
-              # zlib (Depende de libc)
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "zlib_" | grep -v dev)
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
-	      # libkmod (Depende de libc, zlib)
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libkmod_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+              vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libc_")
+              sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/""$vUltVersOpenWrtX86Estable""/targets/x86/64/packages/$vNomArchivo"
 	      # libgcc1
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libgcc1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	      # libpthread (Depende de libgcc1)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpthread_")
-	        sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
               # librt (Depende de libpthread)
 	        vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "librt_")
-	        sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
-              # libpci (Depende de libc)
-	        vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpci_" | grep -v acc)
-	        sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
-	      # pciids (Depende de libc)
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "pciids_")
-		sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
-	      # pciutils (Depende de libc, libkmod, libpci, pciids)
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "pciutils_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
-              # Renombrar archivos
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libc_*.ipk"       -exec mv {} "01-libc.ipk"       \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "zlib_*.ipk"       -exec mv {} "02-zlib.ipk"       \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libkmod_*.ipk"    -exec mv {} "03-libkmod.ipk"    \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libgcc1_*.ipk"    -exec mv {} "04-libgcc1.ipk"    \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libpthread_*.ipk" -exec mv {} "05-libpthread.ipk" \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "librt_*.ipk"      -exec mv {} "06-librt.ipk"      \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "libpci_*.ipk"     -exec mv {} "07-libpci.ipk"     \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciids_*.ipk"     -exec mv {} "08-pciids.ipk"     \;
-                sudo find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "pciutils_*.ipk"   -exec mv {} "09-pciutils.ipk"   \;
-              # Preparar script de instalación de lspci
-                echo '#!/bin/sh'                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-		echo ''                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/01-libc.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/02-zlib.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/03-libkmod.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/04-libgcc1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/05-libpthread.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/06-librt.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/07-libpci.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/08-pciids.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                echo 'opkg install /boot/Paquetes/lspci/09-pciutils.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-                sudo chmod +x                                                            /OpenWrt/PartEFI/Paquetes/lspci/InstalarLSPCI.sh
-            # mc
-              sudo mkdir -p /OpenWrt/PartEFI/Paquetes/mc/
-              cd /OpenWrt/PartEFI/Paquetes/mc/
-	      # libc
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libc_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
-	      # libgcc1
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libgcc1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
-	      # libpthread (Depende de libgcc1)
-                vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpthread_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
-              # librt (Depende de libpthread)
-	        vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "librt_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
               # zlib (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "zlib_" | grep -v dev)
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libffi (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libffi_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
 	      # libattr (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libattr_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
               # libpcre2 (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpcre2_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # glib2 (Depende de libc, zlib, libpthread, libffi, libattr, libpcre2)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "glib2_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
 	      # terminfo (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "terminfo_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libncurses6 (Depende de libc, terminfo)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libncurses6_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libuuid1 (Depende de libc, librt)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libuuid1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libblkid1 (Depende de libc, libuuid1)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libblkid1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libmount1 (Depende de libc, libblkid1)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libmount1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libopenssl3 (Depende de libc)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libopenssl3_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 	      # libssh2-1 (Depende de libc, libopenssl3, zlib)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libssh2-1_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
               # mc (depende de libc, glib2, libncurses6, libmount1, libssh2-1)
                 vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "^mc_")
-                sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
+                sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/packages/$vNomArchivo"
               # Renombrar archivos
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "libc_*.ipk"        -exec mv {} "01-libc.ipk"        \;
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "libgcc1_*.ipk"     -exec mv {} "02-libgcc1.ipk"     \;
@@ -592,25 +604,25 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "libssh2-1_*.ipk"   -exec mv {} "16-libssh2-1.ipk"   \;
                 sudo find /OpenWrt/PartEFI/Paquetes/mc/ -type f -name "mc_*.ipk"          -exec mv {} "17-mc.ipk"          \;
               # Preparar script de instalación de mc
-                echo '#!/bin/sh'                                              | sudo tee    /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-		echo ''                                                       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/01-libc.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/02-libgcc1.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/03-libpthread.ipk'  | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/04-librt.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/05-zlib.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/06-libffi.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/07-libattr.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/08-libpcre2.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/09-glib2.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/10-terminfo.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/11-libncurses6.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/12-libuuid1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/13-libblkid1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/14-libmount1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/15-libopenssl3.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/16-libssh2-1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
-                sudo echo 'opkg install /boot/Paquetes/mc/17-mc.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
+                echo '#!/bin/sh'                                              | sudo tee    /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+				echo ''                                                       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/01-libc.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/02-libgcc1.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/03-libpthread.ipk'  | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/04-librt.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/05-zlib.ipk'        | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/06-libffi.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/07-libattr.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/08-libpcre2.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/09-glib2.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/10-terminfo.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/11-libncurses6.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/12-libuuid1.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/13-libblkid1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/14-libmount1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/15-libopenssl3.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/16-libssh2-1.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
+                sudo echo 'opkg install /boot/Paquetes/mc/17-mc.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh > /dev/null
                 sudo chmod +x                                                               /OpenWrt/PartEFI/Paquetes/mc/InstalarMC.sh
                 #find /OpenWrt/PartEFI/Paquetes/lspci/ -type f -name "*.ipk" | while read -r vArchivo; do
                 #  # Obtener el nombre base del archivo (sin la ruta)
@@ -632,23 +644,23 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 cd /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/
 		# kmod-pps
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-pps_" | grep -v gpio | grep -v disc)
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-ptp
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-ptp_" | grep -v gpio | grep -v disc)
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	        # kmod-e1000e
 	          vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-e1000e_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # Renombrar archivos
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-pps_*.ipk"    -exec mv {} "1-kmod-pps.ipk"    \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-ptp_*.ipk"    -exec mv {} "2-kmod-ptp.ipk"    \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/ -type f -name "kmod-e1000e_*.ipk" -exec mv {} "3-kmod-e1000e.ipk" \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-		  echo ''                                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                           | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo ''                                                                    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/1-kmod-pps.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/2-kmod-ptp.ipk'    | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I219-V/3-kmod-e1000e.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                            /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I219-V/InstalarControlador.sh
 
               # Ethernet Intel I225-V (Por orden de dependencias)/OpenWrt/PartEFI/Paquet
@@ -656,13 +668,13 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 cd /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/
 		# kmod-igc
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-igc_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # Renombrar archivos
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/ -type f -name "kmod-igc_*.ipk"    -exec mv {} "1-kmod-igc.ipk"    \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                        | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
-		  echo ''                                                                 | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I225-V/1-kmod-igc.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                        | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
+                  echo ''                                                                 | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-I225-V/1-kmod-igc.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                         /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-I225-V/InstalarControlador.sh
 
               # Ethernet Intel gigabit (Por orden de dependencias)
@@ -670,19 +682,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                 cd /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/
 		# kmod-i2c-core
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-i2c-core_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # kmod-i2c-algo-bit
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-i2c-algo-bit_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # kmod-ptp
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-ptp_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # kmod-hwmon-core
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-hwmon-core_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-igb
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-igb_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
              # Renombrar archivos
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-i2c-core_*.ipk"     -exec mv {} "1-kmod-i2c-core.ipk"     \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-i2c-algo-bit_*.ipk" -exec mv {} "2-kmod-i2c-algo-bit.ipk" \;
@@ -690,51 +702,51 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-hwmon-core_*.ipk"   -exec mv {} "4-kmod-hwmon-core.ipk"   \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/ -type f -name "kmod-igb_*.ipk"          -exec mv {} "5-kmod-igb.ipk"          \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                                  | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-		  echo ''                                                                           | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/1-kmod-i2c-core.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/2-kmod-i2c-algo-bit.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/3-kmod-ptp.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/4-kmod-hwmon-core.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/5-kmod-igb.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
-		  sudo chmod +x                                                                                   /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                                  | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo ''                                                                           | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/1-kmod-i2c-core.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/2-kmod-i2c-algo-bit.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/3-kmod-ptp.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/4-kmod-hwmon-core.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Intel-Gigabit/5-kmod-igb.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh > /dev/null
+                  sudo chmod +x                                                                                   /OpenWrt/PartEFI/Paquetes/Ethernet-Intel-Gigabit/InstalarControlador.sh
 
 	      # Realtek RTL8125 (Por orden de dependencias)
                 sudo mkdir -p /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/
                 cd /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/
 		# kmod-mii
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mii_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	        # libgcc1
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libgcc1_")
-                  sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                  sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	        # libpthread (Depende de libgcc1)
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpthread_")
-                  sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                  sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # librt (Depende de libpthread)
 	          vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "librt_")
-                  sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                  sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # r8169-firmware ( depende de libc, librt, libpthread)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "r8169-firmware_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
                 # kmod-libphy (Depende de kernel)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-libphy_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-phy-realtek (depende de kernel, kmod-libphy)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-phy-realtek_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	        # kmod-fixed-phy (Depende deernel, kmod-libphy)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-fixed-phy_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # kmod-of-mdio (Depende de kernel, kmod-libphy, kmod-fixed-phy)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-of-mdio_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                 # kmod-mdio-devres (depende de kernel, kmod-libphy, kmod-of-mdio)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mdio-devres_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-r8169 (Depende de kernel, kmod-mii, r8169-firmware)
                   vNomArchivo=$(curl -sL             https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-r8169_")
-	           sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	           sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                # Renombrar archivos
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "kmod-mii_*.ipk"         -exec mv {} "01-kmod-mii.ipk"         \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "libgcc1_*.ipk"          -exec mv {} "02-libgcc1.ipk"          \;
@@ -748,19 +760,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "kmod-mdio-devres_*.ipk" -exec mv {} "10-kmod-mdio-devres.ipk" \;
                   sudo find /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/ -type f -name "kmod-r8169_*.ipk"       -exec mv {} "11-kmod-r8169.ipk"       \;
                 # Preparar script de instalación del controlador
-                  echo '#!/bin/sh'                                                                    | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-		  echo ''                                                                             | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/01-kmod-mii.ipk'         | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/02-libgcc1.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/03-libpthread.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/04-librt.ipk'            | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/05-r8169-firmware.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/06-kmod-libphy.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/07-kmod-phy-realtek.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/08-kmod-fixed-phy.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/09-kmod-of-mdio.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/10-kmod-mdio-devres.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
-                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/11-kmod-r8169.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
+                  echo '#!/bin/sh'                                                                    | sudo tee    /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo ''                                                                             | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/01-kmod-mii.ipk'         | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/02-libgcc1.ipk'          | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/03-libpthread.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/04-librt.ipk'            | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/05-r8169-firmware.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/06-kmod-libphy.ipk'      | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/07-kmod-phy-realtek.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/08-kmod-fixed-phy.ipk'   | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/09-kmod-of-mdio.ipk'     | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/10-kmod-mdio-devres.ipk' | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
+                  echo 'opkg install /boot/Paquetes/Ethernet-Realtek-RTL8125/11-kmod-r8169.ipk'       | sudo tee -a /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh > /dev/null
                   sudo chmod +x                                                                                     /OpenWrt/PartEFI/Paquetes/Ethernet-Realtek-RTL8125/InstalarControlador.sh
 
 	    # Wireless
@@ -771,19 +783,19 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 		# hostapd
     	          # libc
                     vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libc_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                   # libpthread (Depende de libgcc1)
                     vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libpthread_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                   # librt (Depende de libpthread)
 	            vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "librt_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                   # hostapd-common (Depende de libc, librt, libpthread)
                     vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "hostapd-common_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 		  # libnl-tiny1 (Depende de libc)
                     vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "libnl-tiny1_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
                   # libssp (No depende de nada)
 
                   # libubox (Depende de libc, libssp)
@@ -794,35 +806,35 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
 
 		  # hostapd-openssl (Depende de libc, librt, libpthread, libnl-tiny1, hostapd-common, libubus, libopenssl1.1)
                     vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "hostapd-openssl_")
-                    sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
+                    sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/packages/x86_64/base/$vNomArchivo"
 		# 80211
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/kmods/$vVersKernComp/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-cfg80211_")
-                  sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                  sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/kmods/$vVersKernComp/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mac80211_")
-                  sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+                  sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 
               # Mediatek MT7915E (Por orden de dependencias)
                 sudo mkdir -p /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7915E/
                 cd /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7915E/
 		# kmod-mt7915-firmware
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7915-firmware_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-mt7915e
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7915e_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 
               # Mediatek MT7921K (Por orden de dependencias)
                 sudo mkdir -p /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7921K/
                 cd /OpenWrt/PartEFI/Paquetes/Wireless-Mediatek-MT7921K/
 	        # kmod-mt7921-firmware
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921e-firmware_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 		# kmod-mt7921e
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921e_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 	   	# kmod-mt7921-common
                   vNomArchivo=$(curl -sL            https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/ | sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep "kmod-mt7921-common_")
-	          sudo wget --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
+	          sudo wget -q --show-progress --no-check-certificate "https://downloads.openwrt.org/releases/$vUltVersOpenWrtX86Estable/targets/x86/64/packages/$vNomArchivo"
 
               # Atheros 9k
 	      # Atheros 10k
@@ -953,7 +965,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Moviendo copia de seguridad de la instalación anterior a la instalación nueva..."
           echo ""
           # Crear carpeta en la nueva partición
-          sudo mkdir -p /OpenWrt/PartExt4/CopSeg/
+            sudo mkdir -p /OpenWrt/PartExt4/CopSeg/
           # Mover archivos
             sudo mv /CopSegOpenWrt/$vFechaDeEjec/ /OpenWrt/PartExt4/CopSeg/
           # Borrar carpeta de copia de seguridad de la partición de Debian Live
