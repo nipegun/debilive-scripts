@@ -9,17 +9,17 @@
 #  Script de NiPeGun para instalar OpenWrt en una máquina virtual de ProxmoxVE inciando desde Debian Live 
 #
 # Ejecución remota para disco sda:
-#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar-Legacy.sh | bash
 #
 # Ejecución remota para disco vda:
-#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-/dev/sda-/dev/vda-g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar-Legacy.sh | sed 's-/dev/sda-/dev/vda-g' | bash
 #
 # Ejecución remota con disco sda de 1GB
-#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar.sh | sed 's-1025MiB-128MiB-'g | sed 's-3073MiB-512MiB-g' | sed 's-4097MiB-1023MiB-g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/debilive-scripts/main/InstSO/OpenWrtX86-Instalar-Legacy.sh | sed 's-1025MiB-128MiB-'g | sed 's-3073MiB-512MiB-g' | sed 's-4097MiB-1023MiB-g' | bash
 # ----------
 
 # Obtener el número de última versión estable
-  vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | head -n1 | cut -d'"' -f2 | cut -d'/' -f2)
+  vUltVersOpenWrtX86Estable=$(curl -sL https://downloads.openwrt.org | grep eleases | grep -v rchive | grep -v rc | grep 24 | cut -d'"' -f2 | cut -d'/' -f2)
           # Obtener versión de kernel y nro de compilación
             vVersKernComp=$(curl -sL https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/kmods/| sed 's|>|>\n|g' | grep href | cut -d'"' -f2 | grep ^[0-9] | cut -d'/' -f1)
 
