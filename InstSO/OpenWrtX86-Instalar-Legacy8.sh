@@ -258,7 +258,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo rm -rf /OpenWrt/PartExt4/*
 
           echo ""
-          echo "    Bajando la  combinada de kernel y rootfs..."
+          echo "    Bajando la imagen combinada de kernel y rootfs..."
           echo ""
           sudo mkdir -p /OpenWrt/PartExt4/boot 2> /dev/null
           # Comprobar si el paquete wget está instalado. Si no lo está, instalarlo.
@@ -271,7 +271,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
               echo ""
             fi
 		  sudo rm -f /tmp/OpenWrtCombinedEFI.img.gz
-          sudo curl '-#' -Lk https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/openwrt-"$vUltVersOpenWrtX86Estable"-x86-64-generic-ext4-combined-efi.img.gz -o /tmp/OpenWrtCombinedEFI.img.gz
+          sudo wget -q --show-progress --no-check-certificate https://downloads.openwrt.org/releases/"$vUltVersOpenWrtX86Estable"/targets/x86/64/openwrt-"$vUltVersOpenWrtX86Estable"-x86-64-generic-ext4-combined-efi.img.gz -O /tmp/OpenWrtCombinedEFI.img.gz
 
           echo ""
           echo "    Descomprimiendo el archivo..."
@@ -381,7 +381,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             fi
           sudo su -c "wget https://raw.githubusercontent.com/nipegun/o-scripts/master/PostInst/MVdeProxmox-InstalarPaquetes.sh -O /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh"
           echo "rm -rf /root/scripts/1-InstalarPaquetes.sh"                                                                    | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
-          echo "reboot"                                                                                                        | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh> /dev/null
+          echo "reboot"                                                                                                        | sudo tee -a /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh > /dev/null
           sudo chmod +x                                                                                                                      /OpenWrt/PartExt4/root/scripts/1-InstalarPaquetes.sh
         ;;
 
@@ -390,11 +390,11 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo ""
           echo "  Copiando el script de instalación de los o-scripts..."
           echo ""
-          sudo su -c "echo '#!/bin/sh'                                                                                       > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
-          sudo su -c 'echo ""                                                                                               >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "wget -O - https://raw.githubusercontent.com/nipegun/o-scripts/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                     >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
-          sudo chmod +x                                                                                                        /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
+          sudo su -c "echo '#!/bin/sh'                                                                                                          > /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh"
+          sudo su -c 'echo ""                                                                                                                  >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "wget -q --show-progress -O - https://raw.githubusercontent.com/nipegun/o-scripts/master/OScripts-Instalar.sh | sh" >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo su -c 'echo "rm -rf /root/scripts/2-InstalarOScripts.sh"                                                                        >> /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh'
+          sudo chmod +x                                                                                                                           /OpenWrt/PartExt4/root/scripts/2-InstalarOScripts.sh
 
         ;;
 
