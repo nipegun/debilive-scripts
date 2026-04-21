@@ -284,8 +284,8 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "    Montando la imagen..."
           echo ""
 		  # Desmontaje de lo previo
-            sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 sudo losetup -d
-losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 -I{} sh -c 'sudo umount {}p* 2>/dev/null; sudo losetup -d {}'
+            #sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 sudo losetup -d
+            sudo losetup -a | grep OpenWrtCombinedEFI | cut -d: -f1 | xargs -r -n1 -I{} sh -c 'sudo umount {}p* 2>/dev/null; sudo losetup -d {}'
 		  # kernel
             sudo umount /tmp/kernel/
             sudo rm -rf /tmp/kernel/
