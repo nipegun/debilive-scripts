@@ -356,7 +356,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           sudo su -c 'echo "  option netmask '"'255.0.0.0'"'" >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo ""                                 >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "config device"                    >> /OpenWrt/PartEFI/scripts/network'
-	      sudo su -c 'echo "  option name '"'br-wan'"'"       >> /OpenWrt/PartEFI/scripts/network'
+          sudo su -c 'echo "  option name '"'br-wan'"'"       >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option type '"'bridge'"'"       >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option ipv6 '"'0'"'"            >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option bridge_empty '"'1'"'"    >> /OpenWrt/PartEFI/scripts/network'
