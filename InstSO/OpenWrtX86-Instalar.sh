@@ -90,13 +90,13 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
             sudo umount "$vPrimerDisco""2" 2> /dev/null
             sudo umount "$vPrimerDisco""3" 2> /dev/null
           # Crear particiones para montar
-		    sudo rm -rf /OpenWrt/
+            sudo rm -rf /OpenWrt/
             sudo mkdir -p /OpenWrt/PartEFI/
             sudo mount -t auto "$vPrimerDisco""1" /OpenWrt/PartEFI/
             sudo mkdir -p /OpenWrt/PartExt4/
             sudo mount -t auto "$vPrimerDisco""2" /OpenWrt/PartExt4/
           # Crear carpeta donde guardar los archivos
-		    sudo rm -rf /CopSegOpenWrt/
+            sudo rm -rf /CopSegOpenWrt/
             sudo mkdir -p /CopSegOpenWrt/"$vFechaDeEjec"/PartEFI/
             sudo mkdir -p /CopSegOpenWrt/"$vFechaDeEjec"/PartExt4/
           # Copiar archivos
