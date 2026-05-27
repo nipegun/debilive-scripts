@@ -349,7 +349,7 @@ menu=(dialog --checklist "Instalación de OpenWrt X86:" 30 100 20)
           echo "  Configurando el OpenWrt para que pille IP por DHCP..."
           echo ""
           sudo mkdir /OpenWrt/PartEFI/scripts/ 2> /dev/null
-          sudo su -c 'echo "config interface loopback"         > /OpenWrt/PartEFI/scripts/network'
+          sudo su -c 'echo "config interface '"'loopback'"'"   > /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option ifname '"'lo'"'"         >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option proto '"'static'"'"      >> /OpenWrt/PartEFI/scripts/network'
           sudo su -c 'echo "  option ipaddr '"'127.0.0.1'"'"  >> /OpenWrt/PartEFI/scripts/network'
